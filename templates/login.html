@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="login">
+  <div class="card text-center login-form">
+    <div class="card-header login-form-header">
+      <img src="static/images/logo.png" alt=""> 
+      <h1>Bank Pengkreditan Rakyat Perdana</h1>
+      <h3>Sistem Kredit - Login</h3>
+    </div>
+    <div class="card-body login-form-body">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="input-group flex-nowrap login-form-input-container">
+          <span class="input-group-text" id="addon-wrapping">
+          <img src="static/images/logo email.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+          </span>
+          <input type="text" class="form-control" name="email" placeholder="Enter Your Email" aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group flex-nowrap login-form-input-container">
+          <span class="input-group-text" id="addon-wrapping">
+            <img src="static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+          </span>
+          <input type="password" class="form-control" name="password" placeholder="Enter Your Password" aria-describedby="addon-wrapping">
+        </div>  
+        <button type="submit" name="button" value="admin" class="btn login-form-input-submit" style="margin-right: 3%;">ADMIN</button>
+        <button type="submit" name="button" value="user" class="btn login-form-input-submit" style="margin-right: 3%;">USER</button>
+        <button type="button" class="btn login-form-input-submit"> <a href="{% url 'register' %}" style="text-decoration: none; color: white;">REGISTER</a> </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

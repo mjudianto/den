@@ -1,0 +1,7 @@
+# insert data to admin account
+insertToTable('admin', 'null, "den@gmail.com", "den123", null', connection, cursor)
+insertToTable('admin', 'null, "mathew@gmail.com", "mathew123", null', connection, cursor)
+
+# insert data to user account
+insertToTable('user', 'null, "den2@gmail.com", "den123", null', connection, cursor)
+insertToTable('user', 'null, "mathew2@gmail.com", "mathew123", null', connection, cursor)

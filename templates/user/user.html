@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="login">
+  <div class="card text-center login-form" style="width: 60vw;">
+    <div class="card-header login-form-header">
+      <img src="/static/images/logo.png" alt="" style="height: 17vh;"> 
+      <h1>Bank Pengkreditan Rakyat Perdana</h1>
+      <h3>Sistem Kredit - User Page</h3>
+    </div>
+    <div class="card-body login-form-body">
+      <div>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DaftarAjuan" style="text-decoration: none; color: white;">Daftar Ajuan</a></button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#AjuanDiterima" style="text-decoration: none; color: white;">Ajuan Diterima</a></button>
+        <button type="button" class="btn login-form-input-submit admin-button "><a data-bs-toggle="modal" href="#AjuanDitolak" style="text-decoration: none; color: white;">Ajuan Ditolak</a></button>
+      </div> 
+      <div>
+        <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">LOG OUT</a> </button>
+      </div>
+      
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal fade" id="DaftarAjuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Ajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Nominal</th>
+                      <th scope="col">System Output</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Rp. 100.000</td>
+                      <td>Accept</td>
+                      <td>
+                        <button type="button">Accept</button>
+                        <button type="button">Decline</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Decline</td>
+                      <td>
+                        <button type="button">Accept</button>
+                        <button type="button">Decline</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Accept</td>
+                      <td>
+                        <button type="button">Accept</button>
+                        <button type="button">Decline</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+        <div class="modal fade" id="AjuanDiterima" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Nominal</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Accepted</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Accepted</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Accepted</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="AjuanDitolak" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Nominal</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Denied</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Denied</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Denied</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,687 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="login">
+  <div class="card text-center login-form" style="width: 60vw;">
+    <div class="card-header login-form-header">
+      <img src="/static/images/logo.png" alt="" style="height: 17vh;"> 
+      <h1>Bank Pengkreditan Rakyat Perdana</h1>
+      <h3>Sistem Kredit - Admin Page</h3>
+    </div>
+    <div class="card-body login-form-body">
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#FormulirPengajuan" style="text-decoration: none; color: white;">FORMULIR PENGAJUAN</a></button>
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#StatusPengaju" style="text-decoration: none; color: white;">DATA PENGAJUAN</a></button>
+      <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">LOG OUT</a> </button>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal fade" id="FormulirPengajuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Data Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Nama Lengkap</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="namaPengaju" name="namaPengaju">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">NIK</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" id="nikPengaju" name="nikPengaju">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Usia Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="usiaPengaju" id="usiaPengaju" value="10" checked>
+                      <label class="form-check-label" for="usiaPengaju">
+                        > 18 - 35 tahun
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="usiaPengaju" id="usiaPengaju" value="9">
+                      <label class="form-check-label" for="usiaPengaju">
+                        > 35 - 40 tahun 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="usiaPengaju" id="usiaPengaju" value="9">
+                      <label class="form-check-label" for="usiaPengaju">
+                        > 40 - 50 tahun
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="usiaPengaju" id="usiaPengaju" value="8">
+                      <label class="form-check-label" for="usiaPengaju">
+                        > 50 - 55 tahun  
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan3" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Pernikahan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pernikahanPengaju" id="pernikahanPengaju" value="10" checked>
+                      <label class="form-check-label" for="pernikahanPengaju">
+                        Menikah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pernikahanPengaju" id="pernikahanPengaju" value="9">
+                      <label class="form-check-label" for="pernikahanPengaju">
+                        Belum Menikah 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pernikahanPengaju" id="pernikahanPengaju" value="8">
+                      <label class="form-check-label" for="pernikahanPengaju">
+                        Cerai
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan4" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Pendidikan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pendidikanPengaju" id="pendidikanPengaju" value="10" checked>
+                      <label class="form-check-label" for="pendidikanPengaju">
+                        Lulusan Universitas
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pendidikanPengaju" id="pendidikanPengaju" value="10">
+                      <label class="form-check-label" for="pendidikanPengaju">
+                        Lulusan D3
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pendidikanPengaju" id="pendidikanPengaju" value="9">
+                      <label class="form-check-label" for="pendidikanPengaju">
+                        Lulusan SMU / SMK
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pendidikanPengaju" id="pendidikanPengaju" value="8">
+                      <label class="form-check-label" for="pendidikanPengaju">
+                        Lulusan SMP
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="pendidikanPengaju" id="pendidikanPengaju" value="8">
+                      <label class="form-check-label" for="pendidikanPengaju">
+                        Lulusan SD
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan3" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan5" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan5" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Tempat Tinggal Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tempatTinggalPengaju" id="tempatTinggalPengaju" value="10" checked>
+                      <label class="form-check-label" for="tempatTinggalPengaju">
+                        Belum Pernah Pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tempatTinggalPengaju" id="tempatTinggalPengaju" value="9">
+                      <label class="form-check-label" for="tempatTinggalPengaju">
+                        1 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tempatTinggalPengaju" id="tempatTinggalPengaju" value="9">
+                      <label class="form-check-label" for="tempatTinggalPengaju">
+                        2 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tempatTinggalPengaju" id="tempatTinggalPengaju" value="8">
+                      <label class="form-check-label" for="tempatTinggalPengaju">
+                        3 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tempatTinggalPengaju" id="tempatTinggalPengaju" value="8">
+                      <label class="form-check-label" for="tempatTinggalPengaju">
+                        > 3 kali pindah
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan4" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan6" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan6" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Transportasi Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan5" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan7" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan7" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Jabatan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jabatanPengaju" id="jabatanPengaju" value="10" checked>
+                      <label class="form-check-label" for="jabatanPengaju">
+                        Supervisor
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jabatanPengaju" id="jabatanPengaju" value="10">
+                      <label class="form-check-label" for="jabatanPengaju">
+                        Staff tetap 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jabatanPengaju" id="jabatanPengaju" value="9">
+                      <label class="form-check-label" for="jabatanPengaju">
+                        Staff Kontrak 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jabatanPengaju" id="jabatanPengaju" value="8">
+                      <label class="form-check-label" for="jabatanPengaju">
+                        Outsource
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan6" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan8" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan8" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Keahlian Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="keahlianPengaju" id="keahlianPengaju" value="10" checked>
+                      <label class="form-check-label" for="keahlianPengaju">
+                        Skill Expert
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="keahlianPengaju" id="keahlianPengaju" value="10">
+                      <label class="form-check-label" for="keahlianPengaju">
+                        Skill
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="keahlianPengaju" id="keahlianPengaju" value="9">
+                      <label class="form-check-label" for="keahlianPengaju">
+                        Non skill Expert
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="keahlianPengaju" id="keahlianPengaju" value="8">
+                      <label class="form-check-label" for="keahlianPengaju">
+                        Non skill 
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan7" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan9" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan9" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Lama Kerja Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lamaKerjaPengaju" id="lamaKerjaPengaju" value="10" checked>
+                      <label class="form-check-label" for="lamaKerjaPengaju">
+                        ≥ 10 tahun
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lamaKerjaPengaju" id="lamaKerjaPengaju" value="10">
+                      <label class="form-check-label" for="lamaKerjaPengaju">
+                        8 - 10 tahun
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lamaKerjaPengaju" id="lamaKerjaPengaju" value="9">
+                      <label class="form-check-label" for="lamaKerjaPengaju">
+                        5 - 8 tahun
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lamaKerjaPengaju" id="lamaKerjaPengaju" value="8">
+                      <label class="form-check-label" for="lamaKerjaPengaju">
+                        2 - 5 tahun 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lamaKerjaPengaju" id="lamaKerjaPengaju" value="0">
+                      <label class="form-check-label" for="lamaKerjaPengaju">
+                        0 - 2 tahun
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan8" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan10" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan10" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Riwayat Pindah Kerja Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="riwayatPindahKerjaPengaju" id="riwayatPindahKerjaPengaju" value="10" checked>
+                      <label class="form-check-label" for="riwayatPindahKerjaPengaju">
+                        Belum Pernah Pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="riwayatPindahKerjaPengaju" id="riwayatPindahKerjaPengaju" value="9">
+                      <label class="form-check-label" for="riwayatPindahKerjaPengaju">
+                        1 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="riwayatPindahKerjaPengaju" id="riwayatPindahKerjaPengaju" value="9">
+                      <label class="form-check-label" for="riwayatPindahKerjaPengaju">
+                        2 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="riwayatPindahKerjaPengaju" id="riwayatPindahKerjaPengaju" value="8">
+                      <label class="form-check-label" for="riwayatPindahKerjaPengaju">
+                        3 kali pindah
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="riwayatPindahKerjaPengaju" id="riwayatPindahKerjaPengaju" value="8">
+                      <label class="form-check-label" for="riwayatPindahKerjaPengaju">
+                        > 3 kali pindah
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan9" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan11" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan11" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Aset Pribadi Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan10" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan12" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan12" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Hutang Pengaju di Tempat Lain</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="hutangPengajudiTempatLain" id="hutangPengajudiTempatLain" value="10" checked>
+                      <label class="form-check-label" for="hutangPengajudiTempatLain">
+                        Mengakui ada hutang pada LK di luar SLIK & tepat nilainya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="hutangPengajudiTempatLain" id="hutangPengajudiTempatLain" value="8">
+                      <label class="form-check-label" for="hutangPengajudiTempatLain">
+                        Mengakui ada hutang pada LK di luar SLIK tapi tidak tepat nilainya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="hutangPengajudiTempatLain" id="hutangPengajudiTempatLain" value="6">
+                      <label class="form-check-label" for="hutangPengajudiTempatLain">
+                        Tidak mengakui hutang LK lain namun Menjawab sesuai SLIK & tepat nilainya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="hutangPengajudiTempatLain" id="hutangPengajudiTempatLain" value="4">
+                      <label class="form-check-label" for="hutangPengajudiTempatLain">
+                        Tidak mengakui hutang LK lain namun menjawab sesuai SLIK tapi tidak tepat nilainya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="hutangPengajudiTempatLain" id="hutangPengajudiTempatLain" value="2">
+                      <label class="form-check-label" for="hutangPengajudiTempatLain">
+                        Menjawab tidak ada hutang tetapi terdapat hutang di SLIK
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan11" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan13" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan13" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Kelancaran Hutang Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="kelancaranHutangPengaju" id="kelancaranHutangPengaju" value="10" checked>
+                      <label class="form-check-label" for="kelancaranHutangPengaju">
+                        Lancar 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="kelancaranHutangPengaju" id="kelancaranHutangPengaju" value="8">
+                      <label class="form-check-label" for="kelancaranHutangPengaju">
+                        Menunggak 1-30 hari 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="kelancaranHutangPengaju" id="kelancaranHutangPengaju" value="6">
+                      <label class="form-check-label" for="kelancaranHutangPengaju">
+                        Menunggak 30 - 60 hari
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="kelancaranHutangPengaju" id="kelancaranHutangPengaju" value="4">
+                      <label class="form-check-label" for="kelancaranHutangPengaju">
+                        Menunggak 60 - 90 hari
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="kelancaranHutangPengaju" id="kelancaranHutangPengaju" value="0">
+                      <label class="form-check-label" for="kelancaranHutangPengaju">
+                        Menunggak > 90 hari 
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan12" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan14" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan14" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Umur Perusahaan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan13" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan15" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Skala Perusahaan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan14" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan16" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan16" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Jumlah Karyawan Perusahaan Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jumlahKaryawanPerusahaanPengaju" id="jumlahKaryawanPerusahaanPengaju" value="10" checked>
+                      <label class="form-check-label" for="jumlahKaryawanPerusahaanPengaju">
+                        > 250 orang 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jumlahKaryawanPerusahaanPengaju" id="jumlahKaryawanPerusahaanPengaju" value="8">
+                      <label class="form-check-label" for="jumlahKaryawanPerusahaanPengaju">
+                        > 200 -250 orang
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jumlahKaryawanPerusahaanPengaju" id="jumlahKaryawanPerusahaanPengaju" value="6">
+                      <label class="form-check-label" for="jumlahKaryawanPerusahaanPengaju">
+                        > 100 - 200 orang
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jumlahKaryawanPerusahaanPengaju" id="jumlahKaryawanPerusahaanPengaju" value="4">
+                      <label class="form-check-label" for="jumlahKaryawanPerusahaanPengaju">
+                        > 50 - 100 orang
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="jumlahKaryawanPerusahaanPengaju" id="jumlahKaryawanPerusahaanPengaju" value="2">
+                      <label class="form-check-label" for="jumlahKaryawanPerusahaanPengaju">
+                        >25 - 50 orang
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Pevious</button>
+                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+        <div class="modal fade" id="StatusPengaju" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Nominal</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Pending</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Pending</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Mark</td>
+                      <td>Rp. 100.000</td>
+                      <td>Pending</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
