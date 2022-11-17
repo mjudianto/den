@@ -1,16 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, FormView, ListView
 from db.databaseConnect import *
+from django.contrib import messages
 
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sn
 from sklearn import svm
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from sklearn import utils
-import pickle
 from sklearn.svm import SVC
 
 def svm():
@@ -21,9 +18,10 @@ def svm():
 
   df['Status'] = lab.fit_transform(df['Status'].values)
 
-  # X = df[['Score Usia','Score Pernikahan','Score Pendidikan','Score Tempat Tinggal','Score Transportasi','Score Jabatan','Score Keahlian','Score Lama Kerja','Score Riwayat Pindah Kerja','Score Aset Pribadi','Score Hutang di Tempat Lain','Score Kelancaran Hutang','Score Umur Perusahaan', 'Score Skala Perusahaan', 'Score Jumlah Karyawan', 'Score Total']]
-  X = df[['Score Usia','Score Total']]
+  X = df[['Score Usia','Score Pernikahan','Score Pendidikan','Score Tempat Tinggal','Score Transportasi','Score Jabatan','Score Keahlian','Score Lama Kerja','Score Riwayat Pindah Kerja','Score Aset Pribadi','Score Hutang di Tempat Lain','Score Kelancaran Hutang', 'Score Jumlah Karyawan', 'Score Total']]
+  # X = df[['Score Usia','Score Total']]
   y = df['Status']
+  # print(y.head)
 
   # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
 
@@ -74,36 +72,92 @@ cursor = connection.cursor(dictionary=True)
 def Admin(request, pk):
   classifier = svm()
 
+  cursor.execute(f'select * from pengaju where AdminId = {pk}')
+  pengaju = cursor.fetchall()
+  keuanganPengaju = []
+
+  for p in pengaju:
+    p = p['PengajuId']
+    cursor.execute(f'select * from keuanganPengaju where PengajuId = {p} ')
+    result = cursor.fetchone()
+    keuanganPengaju.append(result)
+
+  pengajuZip = zip(pengaju, keuanganPengaju)
+
+  context = {
+    'pengajuZip' : pengajuZip
+  }
+
   if request.method == 'POST':
     namaPengaju = request.POST.get('namaPengaju')
-    print(namaPengaju)
     nikPengaju = request.POST.get('nikPengaju')
-    print(nikPengaju)
-    usiaPengaju = int(request.POST.get('usiaPengaju'))
-    print(usiaPengaju)
-    pernikahanPengaju = int(request.POST.get('pernikahanPengaju'))
-    print(pernikahanPengaju)
-    pendidikanPengaju = int(request.POST.get('pendidikanPengaju'))
-    print(pendidikanPengaju)
-    tempatTinggalPengaju = int(request.POST.get('tempatTinggalPengaju'))
-    print(tempatTinggalPengaju)
-    # usiaPengaju = int(request.POST.get('usiaPengaju')) #Transportasi Pengaju
-    jabatanPengaju = int(request.POST.get('jabatanPengaju'))
-    print(jabatanPengaju)
-    keahlianPengaju = int(request.POST.get('keahlianPengaju'))
-    print(keahlianPengaju)
-    lamaKerjaPengaju = int(request.POST.get('lamaKerjaPengaju'))
-    print(lamaKerjaPengaju)
-    riwayatPindahKerjaPengaju = int(request.POST.get('riwayatPindahKerjaPengaju'))
-    print(riwayatPindahKerjaPengaju)
-    # usiaPengaju = int(request.POST.get('usiaPengaju')) #aset pribadi pengaju
-    hutangPengajudiTempatLain = int(request.POST.get('hutangPengajudiTempatLain'))
-    print(hutangPengajudiTempatLain)
-    kelancaranHutangPengaju = int(request.POST.get('kelancaranHutangPengaju'))
-    print(kelancaranHutangPengaju)
-    # usiaPengaju = int(request.POST.get('usiaPengaju')) #umur perusahaan
-    # usiaPengaju = int(request.POST.get('usiaPengaju')) #skala perusahaan
-    jumlahKaryawanPerusahaanPengaju = int(request.POST.get('jumlahKaryawanPerusahaanPengaju'))
-    print(jumlahKaryawanPerusahaanPengaju)
 
-  return render(request, 'admin/admin.html')
+    insertToTable('pengaju', f'null, "{namaPengaju}", "{nikPengaju}", {pk}, "Pending"', connection, cursor)
+
+    kreditPengaju = int(request.POST.get('kreditPengaju'))
+    jangkaWaktuKredit = int(request.POST.get('jangkaWaktuKredit'))
+    totalPendapatanPengaju = int(request.POST.get('totalPendapatanPengaju')) if request.POST.get('totalPendapatanPengaju') != '' and request.POST.get('totalPendapatanPengaju') != None else 0
+    totalBiayaPengaju = int(request.POST.get('totalBiayaPengaju')) if request.POST.get('totalBiayaPengaju') != '' and request.POST.get('totalBiayaPengaju') != None else 0
+
+    maksimumAngsuran = (totalPendapatanPengaju - totalBiayaPengaju)*75/100
+    print(maksimumAngsuran)
+    bunga = 1.58
+    plafondMaksimum = (maksimumAngsuran*jangkaWaktuKredit)/(1+(bunga*jangkaWaktuKredit))
+    
+    cursor.execute(f"SELECT PengajuId FROM pengaju where NIK = '{nikPengaju}'")
+    idPengaju = cursor.fetchone()
+
+    insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {idPengaju["PengajuId"]}, {plafondMaksimum}, null', connection, cursor)
+
+    arr1 = []
+    arr2 = []
+
+    usiaPengaju = int(request.POST.get('usiaPengaju'))
+    arr2.append(usiaPengaju)
+    pernikahanPengaju = int(request.POST.get('pernikahanPengaju'))
+    arr2.append(pernikahanPengaju)
+    pendidikanPengaju = int(request.POST.get('pendidikanPengaju'))
+    arr2.append(pendidikanPengaju)
+    tempatTinggalPengaju = int(request.POST.get('tempatTinggalPengaju'))
+    arr2.append(tempatTinggalPengaju)
+    transportasiPengaju = int(request.POST.get('transportasiPengaju'))
+    arr2.append(transportasiPengaju)
+    jabatanPengaju = int(request.POST.get('jabatanPengaju'))
+    arr2.append(jabatanPengaju)
+    keahlianPengaju = int(request.POST.get('keahlianPengaju'))
+    arr2.append(keahlianPengaju)
+    lamaKerjaPengaju = int(request.POST.get('lamaKerjaPengaju'))
+    arr2.append(lamaKerjaPengaju)
+    riwayatPindahKerjaPengaju = int(request.POST.get('riwayatPindahKerjaPengaju'))
+    arr2.append(riwayatPindahKerjaPengaju)
+    asetPribadiPengaju = int(request.POST.get('asetPribadiPengaju')) 
+    arr2.append(asetPribadiPengaju)
+    hutangPengajudiTempatLain = int(request.POST.get('hutangPengajudiTempatLain'))
+    arr2.append(hutangPengajudiTempatLain)
+    kelancaranHutangPengaju = int(request.POST.get('kelancaranHutangPengaju'))
+    arr2.append(kelancaranHutangPengaju)
+    jumlahKaryawanPerusahaanPengaju = int(request.POST.get('jumlahKaryawanPerusahaanPengaju'))
+    arr2.append(jumlahKaryawanPerusahaanPengaju)
+
+    character = 35/100*((hutangPengajudiTempatLain+kelancaranHutangPengaju+riwayatPindahKerjaPengaju+pernikahanPengaju)/40*10)
+    capacity = 25/100*((usiaPengaju+pendidikanPengaju+lamaKerjaPengaju+jabatanPengaju+keahlianPengaju)/50*10)
+    capital = 20/100*((tempatTinggalPengaju+transportasiPengaju+asetPribadiPengaju)/30*10)
+    conditionOfEconomics = 20/100*((jumlahKaryawanPerusahaanPengaju)/10*10)
+
+    scoreTotal = character+capacity+capital+conditionOfEconomics
+    arr2.append(scoreTotal)
+
+    insertToTable('scorepengaju', f'null, {usiaPengaju}, {pernikahanPengaju}, {pendidikanPengaju}, {tempatTinggalPengaju}, {transportasiPengaju}, {jabatanPengaju}, {keahlianPengaju}, {lamaKerjaPengaju}, {riwayatPindahKerjaPengaju}, {asetPribadiPengaju}, {hutangPengajudiTempatLain}, {kelancaranHutangPengaju}, {jumlahKaryawanPerusahaanPengaju}, {scoreTotal}, {idPengaju["PengajuId"]}', connection, cursor)
+
+
+    arr1.append(arr2)
+    prediction = "Diterima" if classifier.predict(arr1)[0] == 0 else "Ditolak"
+    # print("prediction : ", prediction)
+    insertToTable('prediksisistem', f'null, "{prediction}", {idPengaju["PengajuId"]}', connection, cursor)
+    # print("score total : ", scoreTotal)
+
+    context = {
+      'pengajuZip' : pengajuZip,
+    }
+
+  return render(request, 'admin/admin.html', context)

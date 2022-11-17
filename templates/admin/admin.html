@@ -43,8 +43,81 @@
                     <input type="number" class="form-control" id="nikPengaju" name="nikPengaju">
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">Permohonan Kredit</label>
+                  <div class="col-sm-8" style="align-items: center; display: flex;">
+                    <input type="range" style="width: 80% !important; margin-right: 2vw;" class="form-range" step="100000" id="kreditPengaju" name="kreditPengaju" value="" min="100000" max="50000000" oninput="this.nextElementSibling.value = this.value">
+                    <output></output>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">Jangka Waktu</label>
+                  <div class="col-sm-8" style="align-items: center; display: flex;">
+                    <input type="range" style="width: 80% !important; margin-right: 2vw;" class="form-range" step="1" id="jangkaWaktuKredit" name="jangkaWaktuKredit" value="" min="1" max="36" oninput="this.nextElementSibling.value = this.value">
+                    <output></output>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan1" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan1" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Data Pengaju</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row mb-2">
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Total Pendapatan</label>
+                  <div class="col-sm-8">
+                    <input type="number" onchange="totalPendapatan(this.value)" class="form-control" id="pendapatanPengaju" name="pendapatanPengaju">
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                  </div>
+                  <div class="col" style="display: flex; flex-basis: 40% !important; text-align: right;">
+                    <label for="inputPassword3" class="" style="margin-right: 2.3vw;">Total Pendapatan</label>
+                    <p for="inputPassword3" class="" id="totalPendapatan"></p>
+                    <input type="hidden" value="" name="totalPendapatanPengaju" id="totalPendapatanPengaju">
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">Biaya Rumah Tangga</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" onchange="totalBiaya()" id="biayaRumahTanggaPengaju" name="biayaRumahTanggaPengaju">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">Angsuran / Cicilan</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" onchange="totalBiaya()" id="AngsuranPengaju" name="AngsuranPengaju">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputPassword3" class="col-sm-4 col-form-label">Biaya Pendidikan</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" onchange="totalBiaya()" id="biayaPendidikanPengaju" name="biayaPendidikanPengaju">
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                  </div>
+                  <div class="col" style="display: flex; flex-basis: 40% !important; text-align: right;">
+                    <label for="" class="" style="margin-right: 4.5vw;">Total Biaya</label>
+                    <p for="" class="" id="totalBiaya" name="totalBiaya"></p>
+                    <input type="hidden" value="" name="totalBiayaPengaju" id="totalBiayaPengaju">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
               </div>
             </div>
@@ -88,7 +161,7 @@
                 </fieldset>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan1" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan3" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
               </div>
             </div>
@@ -240,6 +313,40 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="transportasiPengaju" id="transportasiPengaju" value="10" checked>
+                      <label class="form-check-label" for="transportasiPengaju">
+                        Mobil (Lunas)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="transportasiPengaju" id="transportasiPengaju" value="8">
+                      <label class="form-check-label" for="transportasiPengaju">
+                        Mobil (Cicilan)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="transportasiPengaju" id="transportasiPengaju" value="10">
+                      <label class="form-check-label" for="transportasiPengaju">
+                        Sepeda motor (Lunas)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="transportasiPengaju" id="transportasiPengaju" value="8">
+                      <label class="form-check-label" for="transportasiPengaju">
+                        Sepeda motor (Cicilan)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="transportasiPengaju" id="transportasiPengaju" value="8">
+                      <label class="form-check-label" for="transportasiPengaju">
+                        Kendaraan Umum			
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan5" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
@@ -444,6 +551,46 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <fieldset class="row mb-3">
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="5" checked>
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Rumah (lt/lb, atas nama)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="4">
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Tanah (luas, atas nama)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="3">
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Mobil			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="2">
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Motor			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="1">
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Lainnya (Jelaskan bentuknya)			
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="asetPribadiPengaju" id="asetPribadiPengaju" value="0">
+                      <label class="form-check-label" for="asetPribadiPengaju">
+                        Tidak ada				
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan10" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
@@ -547,38 +694,6 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan12" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan14" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade" id="FormulirPengajuan14" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel2">Umur Perusahaan Pengaju</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan13" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade" id="FormulirPengajuan15" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel2">Skala Perusahaan Pengaju</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan14" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan16" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
               </div>
             </div>
@@ -648,34 +763,26 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
-                      <th scope="col">Nominal</th>
+                      <th scope="col">Nominal Pengajuan</th>
+                      <th scope="col">Plafond Diterima</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for pengaju, keuanganPengaju in pengajuZip %}
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Pending</td>
+                      <th scope="row">{{pengaju.PengajuId}}</th>
+                      <td>{{pengaju.Nama}}</td>
+                      <td>Rp. {{keuanganPengaju.PermohonanKreditPengaju}}</td>
+                      <td>Rp. {{keuanganPengaju.PlafondDisetujui}}</td>
+                      <td>{{pengaju.Status}}</td>
                     </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Pending</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Pending</td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
@@ -683,5 +790,38 @@
     </div>
   </div>
 </div>
+
+{% block scripts %}
+
+<script>
+  function totalPendapatan(val){  
+    const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
+    $('#totalPendapatanPengaju').val(val);
+
+    val = formatter.format(val) 
+    $('#totalPendapatan').text(val);
+  }
+
+  function totalBiaya(){  
+    const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
+
+    var biayaRumahTanggaPengaju = parseInt(document.getElementById("biayaRumahTanggaPengaju").value);
+    biayaRumahTanggaPengaju = isNaN(biayaRumahTanggaPengaju) ? biayaRumahTanggaPengaju=0 : biayaRumahTanggaPengaju=biayaRumahTanggaPengaju;
+
+    var AngsuranPengaju = parseInt(document.getElementById("AngsuranPengaju").value);
+    AngsuranPengaju = isNaN(AngsuranPengaju) ? AngsuranPengaju=0 : AngsuranAngsuranPengaju=AngsuranPengaju;
+
+    var biayaPendidikanPengaju = parseInt(document.getElementById("biayaPendidikanPengaju").value);
+    biayaPendidikanPengaju = isNaN(biayaPendidikanPengaju) ? biayaPendidikanPengaju=0 : biayaPendidikanPengaju=biayaPendidikanPengaju;
+
+    var totalBiaya = biayaRumahTanggaPengaju + AngsuranPengaju + biayaPendidikanPengaju;
+
+    $('#totalBiayaPengaju').val(totalBiaya);
+    totalBiaya = formatter.format(totalBiaya) 
+    $('#totalBiaya').text(totalBiaya);
+  }
+</script>
+
+{% endblock scripts%}
 
 {% endblock content %}

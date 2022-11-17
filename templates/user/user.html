@@ -30,7 +30,7 @@
       <form method="POST">
         {% csrf_token %}
         <div class="modal fade" id="DaftarAjuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-md">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Ajuan</h5>
@@ -42,43 +42,37 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
-                      <th scope="col">Nominal</th>
+                      <th scope="col">Nominal Ajuan</th>
+                      <th scope="col">Plafond Maksimum</th>
+                      <th scope="col">Plafond Disetujui</th>
                       <th scope="col">System Output</th>
+                      <th scope="col">Score Total</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for pengaju, keuanganPengaju, scorePengaju, PrediksiSistem in pengajuZip %}
                     <tr>
                       <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Rp. 100.000</td>
-                      <td>Accept</td>
+                      <td>{{pengaju.Nama}}</td>
+                      <td>{{keuanganPengaju.PermohonanKreditPengaju}}</td>
+                      <td>{{keuanganPengaju.PlafondMaksimum}}</td>
+                      <td>{{keuanganPengaju.PlafondDisetujui}}</td>
+                      <td>{{PrediksiSistem.prediksi}}</td>
+                      <td>{{scorePengaju.ScoreTotal}}</td>
                       <td>
-                        <button type="button">Accept</button>
-                        <button type="button">Decline</button>
+                        <div style="display: flex; justify-content: center;">
+                        {% if pengaju.Status == 'Pending' %}
+                          <button type="submit" name="button" value="Accepted-{{pengaju.PengajuId}}" style="margin-right: 1vw;">Accept</button>
+                          <button type="sbumit" name="button" value="Declined-{{pengaju.PengajuId}}">Decline</button>
+                          <input type="hidden" value="{{pengaju.PengajuId}}">
+                        {% else %}
+                          {{pengaju.Status}}
+                        {% endif %}
+                        </div>
                       </td>
                     </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Decline</td>
-                      <td>
-                        <button type="button">Accept</button>
-                        <button type="button">Decline</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Accept</td>
-                      <td>
-                        <button type="button">Accept</button>
-                        <button type="button">Decline</button>
-                      </td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
@@ -99,29 +93,17 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
-                      <th scope="col">Nominal</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for pengaju in pengajuDisetujui %}
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Accepted</td>
+                      <th scope="row">{{pengaju.PengajuId}}</th>
+                      <td>{{pengaju.Nama}}</td>
+                      <td>{{pengaju.Status}}</td>
                     </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Accepted</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Accepted</td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
@@ -141,29 +123,17 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
-                      <th scope="col">Nominal</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for pengaju in pengajuDitolak %}
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Denied</td>
+                      <th scope="row">{{pengaju.PengajuId}}</th>
+                      <td>{{pengaju.Nama}}</td>
+                      <td>{{pengaju.Status}}</td>
                     </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Denied</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Mark</td>
-                      <td>Rp. 100.000</td>
-                      <td>Denied</td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
