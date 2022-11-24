@@ -130,4 +130,4 @@ def User(request, pk):
       'df' : df,
     }
 
-  return render(request, 'user/user.html', context)
+  return render(request, 'master/master.html', context)

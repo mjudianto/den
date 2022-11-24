@@ -30,7 +30,7 @@ def Login(request):
                 if password == passwordResult['Password']:
                     cursor.execute(f"SELECT MasterId FROM {account} where Email = '{email}'")
                     idResult = cursor.fetchone()
-                    return redirect('user', pk=idResult['MasterId'])
+                    return redirect('master', pk=idResult['MasterId'])
                 else:
                     messages.info(request, 'Email or Password is incorect')
         else:
@@ -73,7 +73,7 @@ def Register(request):
                 insertToTable(button, value, connection, cursor)
                 cursor.execute(f"SELECT UserId FROM {button} where Email = '{email}'")
                 idResult = cursor.fetchone()
-                return redirect('user', pk=idResult['UserId'])
+                return redirect('master', pk=idResult['UserId'])
         else:
             messages.info(request, 'Password Doesnt"t Match, Please Try Again')
 
