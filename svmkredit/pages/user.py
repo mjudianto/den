@@ -6,10 +6,10 @@ import json
 import pandas as pd
 from sklearn import preprocessing
 
-connection = connect()
-cursor = connection.cursor(dictionary=True)
-
 def User(request, pk):
+  connection = connect()
+  cursor = connection.cursor(dictionary=True)
+  
   df = pd.read_excel('db/dataPengaju.xlsx', sheet_name='data')
 
   cursor.execute(f'select * from pengaju where Status = "Pending"')

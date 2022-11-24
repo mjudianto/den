@@ -66,10 +66,12 @@ def svm():
 
   return classifier
 
-connection = connect()
-cursor = connection.cursor(dictionary=True)
+
 
 def Admin(request, pk):
+  connection = connect()
+  cursor = connection.cursor(dictionary=True)
+  
   classifier = svm()
 
   cursor.execute(f'select * from pengaju where AdminId = {pk}')
