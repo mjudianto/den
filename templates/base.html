@@ -15,7 +15,7 @@
     <ul class="messages" style="padding: 0 !important">
         {% for message in messages %}
         <div {% if message.tags %} class="{{ message.tags }} alert alert-danger alert-dismissible fade show"{% endif %} role="alert" style="text-align: center; width: 100vw;">
-          <strong style="font-size: 20px;"> Email or Password is incorect </strong>
+          <strong style="font-size: 20px;"> {{message}} </strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->

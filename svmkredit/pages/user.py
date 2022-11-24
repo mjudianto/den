@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, FormView, ListView
 from db.databaseConnect import *
+from django.contrib import messages
+import json
 
 connection = connect()
 cursor = connection.cursor(dictionary=True)
@@ -27,47 +29,96 @@ def User(request, pk):
 
   cursor.execute(f'select * from pengaju where Status = "Declined"')
   pengajuDitolak = cursor.fetchall()
+  
+  admin = selectAll('admin', cursor)
 
+  adminjs = json.dumps(admin)
+  
   context = {
     'pengajuZip' : pengajuZip,
     'pengajuDisetujui' : pengajuDisetujui,
     'pengajuDitolak' : pengajuDitolak,
+    'admin' : admin,
+    'adminjs' : adminjs,
   }
 
   if request.method == 'POST':
     button = request.POST.get('button')
     button = button.split('-')
+    # print(button[0])
 
-    cursor.execute(f'update pengaju set Status = "{button[0]}" where PengajuId = {button[1]}')
-    connection.commit()
-
-    cursor.execute(f'select PlafondMaksimum, PermohonanKreditPengaju from keuanganpengaju where PengajuId = {button[1]}')
-    result = cursor.fetchone()
-    plafondmaksimum = result['PlafondMaksimum']
-    permohonankreditpengaju = result['PermohonanKreditPengaju']
-    # print(plafondmaksimum)
-
-    cursor.execute(f'select ScoreTotal from scorepengaju where PengajuId = {button[1]}')
-    scoretotal = cursor.fetchone()
-    scoretotal = scoretotal['ScoreTotal']
-    # print(scoretotal)
-
-    if button[0] == 'Accepted':
-      plafondditerima = scoretotal/10*plafondmaksimum
-      if permohonankreditpengaju < plafondditerima:
-        cursor.execute(f'update keuanganpengaju set PlafondDisetujui = {permohonankreditpengaju} where PengajuId = {button[1]}')
-        connection.commit()
-      else:
-        cursor.execute(f'update keuanganpengaju set PlafondDisetujui = {plafondditerima} where PengajuId = {button[1]}')
-        connection.commit()
-    if button == 'Declined':
-      cursor.execute(f'update keuanganpengaju set PlafondDisetujui = 0 where PengajuId = {button[1]}')
+    if button[0] == 'Accepted' or button[0] == 'Declined':
+      cursor.execute(f'update pengaju set Status = "{button[0]}" where PengajuId = {button[1]}')
       connection.commit()
+
+      cursor.execute(f'select PlafondMaksimum, PermohonanKreditPengaju from keuanganpengaju where PengajuId = {button[1]}')
+      result = cursor.fetchone()
+      plafondmaksimum = result['PlafondMaksimum']
+      permohonankreditpengaju = result['PermohonanKreditPengaju']
+      # print(plafondmaksimum)
+
+      cursor.execute(f'select ScoreTotal from scorepengaju where PengajuId = {button[1]}')
+      scoretotal = cursor.fetchone()
+      scoretotal = scoretotal['ScoreTotal']
+      # print(scoretotal)
+
+      if button[0] == 'Accepted':
+        plafondditerima = scoretotal/10*plafondmaksimum
+        if permohonankreditpengaju < plafondditerima:
+          cursor.execute(f'update keuanganpengaju set PlafondDisetujui = {permohonankreditpengaju} where PengajuId = {button[1]}')
+          connection.commit()
+        else:
+          cursor.execute(f'update keuanganpengaju set PlafondDisetujui = {plafondditerima} where PengajuId = {button[1]}')
+          connection.commit()
+      if button == 'Declined':
+        cursor.execute(f'update keuanganpengaju set PlafondDisetujui = 0 where PengajuId = {button[1]}')
+        connection.commit()
+
+    if button[0] == 'admin':
+      email = request.POST.get('email')
+      password = request.POST.get('password')
+      confirmpassword = request.POST.get('confirmpassword')
+      telp = ''
+      telp = request.POST.get('telp')
+      if password == confirmpassword:
+          if telp == None or telp == '':
+              telp = 'null'
+              value = 'null' + ', "' + email + '" , "' + password + '" ,' + telp
+          else:
+              value = 'null' + ', "' + email + '" , "' + password + '" , "' + telp + '"'
+          # print(value)
+          insertToTable(button[0], value, connection, cursor)
+      else:
+          messages.info(request, 'Password Doesn"t Match, Please Try Again')
+    
+    if button[0] == 'delete':
+      cursor.execute(f'delete from admin where AdminId = {button[1]}')
+      connection.commit()
+    
+    if button[0] == 'updateAdmin':
+      updateAdminId = request.POST.get('updateAdminId')
+      email = request.POST.get('updateEmail')
+      password = request.POST.get('updatePassword')
+      confirmpassword = request.POST.get('updateConfirmpassword')
+      telp = ''
+      telp = request.POST.get('updateTelp')
+
+      # print(updateAdminId)
+      if password == confirmpassword:
+          if telp == None or telp == '':
+            telp = 'null'
+            cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = {telp} where AdminId = {updateAdminId}')
+            connection.commit()
+          else:
+            cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = "{telp}" where AdminId = {updateAdminId}')
+            connection.commit()
     
     context = {
       'pengajuZip' : pengajuZip,
       'pengajuDisetujui' : pengajuDisetujui,
       'pengajuDitolak' : pengajuDitolak,
+      'admin' : admin,
+      'adminjs' : adminjs,
     }
 
   return render(request, 'user/user.html', context)

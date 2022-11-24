@@ -13,24 +13,33 @@ cursor = connection.cursor(dictionary=True)
 def Login(request):
 
     if request.method == 'POST':
-        button = request.POST.get('button')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        cursor.execute(f"SELECT Password FROM {button} where Email = '{email}'")
+        account = 'admin'
+        cursor.execute(f"SELECT Password FROM {account} where Email = '{email}'")
         passwordResult = cursor.fetchone()
-
-        if passwordResult != None and password == passwordResult['Password']:
-            if button == 'admin':
-                cursor.execute(f"SELECT AdminId FROM {button} where Email = '{email}'")
+        if passwordResult == None:
+            account = 'master'
+            cursor.execute(f"SELECT Password FROM {account} where Email = '{email}'")
+            passwordResult = cursor.fetchone()
+            if passwordResult == None:
+                account = ''
+                messages.info(request, 'Account Not Found')
+            else:
+                if password == passwordResult['Password']:
+                    cursor.execute(f"SELECT MasterId FROM {account} where Email = '{email}'")
+                    idResult = cursor.fetchone()
+                    return redirect('user', pk=idResult['MasterId'])
+                else:
+                    messages.info(request, 'Email or Password is incorect')
+        else:
+            if password == passwordResult['Password']:
+                cursor.execute(f"SELECT AdminId FROM {account} where Email = '{email}'")
                 idResult = cursor.fetchone()
                 return redirect('admin', pk=idResult['AdminId'])
-            if button == 'user':
-                cursor.execute(f"SELECT UserId FROM {button} where Email = '{email}'")
-                idResult = cursor.fetchone()
-                return redirect('user', pk=idResult['UserId'])
-        else:
-            messages.info(request, 'Email or Password is incorect')
+            else:
+                messages.info(request, 'Email or Password is incorect')
 
     return render(request, 'login.html')
 

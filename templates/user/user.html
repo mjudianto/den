@@ -24,20 +24,21 @@
         <button type="button" class="btn login-form-input-submit admin-button "><a data-bs-toggle="modal" href="#AjuanDitolak" style="text-decoration: none; color: white;">Ajuan Ditolak</a></button>
       </div> 
       <div>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DaftarAdmin" style="text-decoration: none; color: white;">Daftar Admin</a></button>
         <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">LOG OUT</a> </button>
       </div>
       
       <form method="POST">
         {% csrf_token %}
         <div class="modal fade" id="DaftarAjuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Ajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table">
+                <table class="table" style="justify-content: center; align-items: center; text-align: center;">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -46,7 +47,7 @@
                       <th scope="col">Plafond Maksimum</th>
                       <th scope="col">Plafond Disetujui</th>
                       <th scope="col">System Output</th>
-                      <th scope="col">Score Total</th>
+                      <th scope="col"><a data-bs-toggle="modal" href="#ScoreDetail" style="text-decoration: none;">Score Total</a></th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
@@ -75,6 +76,123 @@
                     {% endfor %}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="DaftarAdmin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <table class="table" style="justify-content: center; align-items: center; text-align: center;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Password</th>
+                      <th scope="col">No telp</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for admin in admin %}
+                    <tr>
+                      <th scope="row">{{admin.AdminId}}</th>
+                      <td>{{admin.Email}}</td>
+                      <td>{{admin.Password}}</td>
+                      <td>{{admin.NoTelp}}</td>
+                      <td>
+                        <div style="display: flex; justify-content: center;">
+                          <button type="submit" name="button" value="delete-{{admin.AdminId}}" style="margin-right: 7%;">delete</button>
+                          <button type="button" name="button"><a onclick="getAdmin({{admin.AdminId}})" data-bs-toggle="modal" href="#UpdateAdmin" style="text-decoration: none; color: black;">Update</a></button>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary"><a data-bs-toggle="modal" href="#AddAdmin" style="text-decoration: none; color: white;">Add Admin</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="AddAdmin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                  <img src="/static/images/logo email.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="text" class="form-control" name="email" placeholder="Enter Your Email" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo phone.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="text" class="form-control" name="telp" placeholder="Enter Phone Number" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="password" class="form-control" name="password" placeholder="Enter Your Password" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Your Password" aria-describedby="addon-wrapping">
+                </div>
+                <button type="submit" name="button" value="admin-0" class="btn login-form-input-submit">ADD</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="UpdateAdmin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Update Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                  <img src="/static/images/logo email.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="text" class="form-control" name="updateEmail" id="updateEmail" placeholder="Enter Your Email" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo phone.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="text" class="form-control" name="updateTelp" id="updateTelp" placeholder="Enter Phone Number" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="password" class="form-control" name="updatePassword" id="updatePassword" placeholder="Enter Your Password" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container register-form-input">
+                  <span class="input-group-text" id="addon-wrapping">
+                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
+                  </span>
+                  <input type="password" class="form-control" name="updateConfirmpassword" placeholder="Confirm Your Password" aria-describedby="addon-wrapping">
+                </div>
+                <input type="hidden" name="updateAdminId" id="updateAdminId">
+                <button type="submit" name="button" value="updateAdmin-0" class="btn login-form-input-submit">UPDATE</button>
               </div>
             </div>
           </div>
@@ -140,8 +258,59 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="ScoreDetail" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="display: flex;">
+                <div style="flex-basis: 33%;">
+                  <div style="display: flex;"><p>1. Pengaju Id : </p> <p></p></div>
+                  <div style="display: flex;"><p>2. Nama Pengaju : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>3. Score Usia : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>4. Score Pernikahan : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>5. Score Pendidikan : </p> <p> Mathew</p></div>
+                </div>
+                <div style="flex-basis: 33%;">
+                  <div style="display: flex;"><p>6. Score Tempat Tinggal : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>7. Score Transportasi : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>8. Score Jabatan : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>9. Score Keahlian : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>10. Score Lama Kerja : </p> <p> Mathew</p></div>
+                </div>
+                <div  style="flex-basis: 34%;">
+                  <div style="display: flex;"><p>11. Score Riwayat Pindah Kerja : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>12. Score Riwayat Aset Pribadi : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>13. Score Hutang di Tempat Lain : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>14. Score Kelancaran Hutang : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>15. Score Jumlah Karyawan : </p> <p> Mathew</p></div>
+                </div>
+              </div>
+              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p> Mathew</p></div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
 </div>
 
 {% endblock content %}
+
+{% block scripts %}
+
+<script>
+  function getAdmin(val){
+    var admin = '{{adminjs|safe}}';
+    const obj = JSON.parse(admin);
+    var selectedAdmin = obj.find(element => element.AdminId == val);
+
+    $('#updateEmail').val(selectedAdmin.Email);
+    $('#updateTelp').val(selectedAdmin.NoTelp);
+    $('#updatePassword').val(selectedAdmin.Password);
+    $('#updateAdminId').val(selectedAdmin.AdminId);
+  }
+</script>
+
+{% endblock scripts %}
