@@ -3,11 +3,15 @@ from django.views.generic import TemplateView, View, FormView, ListView
 from db.databaseConnect import *
 from django.contrib import messages
 import json
+import pandas as pd
+from sklearn import preprocessing
 
 connection = connect()
 cursor = connection.cursor(dictionary=True)
 
 def User(request, pk):
+  df = pd.read_excel('db/dataPengaju.xlsx', sheet_name='data')
+
   cursor.execute(f'select * from pengaju where Status = "Pending"')
   pengaju = cursor.fetchall()
 
@@ -33,6 +37,7 @@ def User(request, pk):
   admin = selectAll('admin', cursor)
 
   adminjs = json.dumps(admin)
+  scorejs = json.dumps(scorePengaju)
   
   context = {
     'pengajuZip' : pengajuZip,
@@ -40,6 +45,8 @@ def User(request, pk):
     'pengajuDitolak' : pengajuDitolak,
     'admin' : admin,
     'adminjs' : adminjs,
+    'scorejs' : scorejs,
+    'df' : df,
   }
 
   if request.method == 'POST':
@@ -119,6 +126,8 @@ def User(request, pk):
       'pengajuDitolak' : pengajuDitolak,
       'admin' : admin,
       'adminjs' : adminjs,
+      'scorejs' : scorejs,
+      'df' : df,
     }
 
   return render(request, 'user/user.html', context)

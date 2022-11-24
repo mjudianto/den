@@ -25,6 +25,7 @@
       </div> 
       <div>
         <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DaftarAdmin" style="text-decoration: none; color: white;">Daftar Admin</a></button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DataSVM" style="text-decoration: none; color: white;">Data SVM</a></button>
         <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">LOG OUT</a> </button>
       </div>
       
@@ -47,8 +48,9 @@
                       <th scope="col">Plafond Maksimum</th>
                       <th scope="col">Plafond Disetujui</th>
                       <th scope="col">System Output</th>
-                      <th scope="col"><a data-bs-toggle="modal" href="#ScoreDetail" style="text-decoration: none;">Score Total</a></th>
+                      <th scope="col">Score Total</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Detail Score</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,12 +68,12 @@
                         {% if pengaju.Status == 'Pending' %}
                           <button type="submit" name="button" value="Accepted-{{pengaju.PengajuId}}" style="margin-right: 1vw;">Accept</button>
                           <button type="sbumit" name="button" value="Declined-{{pengaju.PengajuId}}">Decline</button>
-                          <input type="hidden" value="{{pengaju.PengajuId}}">
                         {% else %}
                           {{pengaju.Status}}
                         {% endif %}
                         </div>
                       </td>
+                      <td><button type="button" value="{{pengaju.PengajuId}}-{{pengaju.Nama}}" onclick="getScoreDetail(this.value)"><a data-bs-toggle="modal" href="#ScoreDetail" style="text-decoration: none; color: black;">Show Detail</a></button></td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -267,28 +269,41 @@
               </div>
               <div class="modal-body" style="display: flex;">
                 <div style="flex-basis: 33%;">
-                  <div style="display: flex;"><p>1. Pengaju Id : </p> <p></p></div>
-                  <div style="display: flex;"><p>2. Nama Pengaju : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>3. Score Usia : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>4. Score Pernikahan : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>5. Score Pendidikan : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>1. Pengaju Id : </p> <p id="PengajuId"></p></div>
+                  <div style="display: flex;"><p>2. Nama Pengaju : </p> <p id="NamaPengaju"></p></div>
+                  <div style="display: flex;"><p>3. Score Usia : </p> <p id="ScoreUsia"></p></div>
+                  <div style="display: flex;"><p>4. Score Pernikahan : </p> <p id="ScorePernikahan"></p></div>
+                  <div style="display: flex;"><p>5. Score Pendidikan : </p> <p id="ScorePendidikan"></p></div>
                 </div>
                 <div style="flex-basis: 33%;">
-                  <div style="display: flex;"><p>6. Score Tempat Tinggal : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>7. Score Transportasi : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>8. Score Jabatan : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>9. Score Keahlian : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>10. Score Lama Kerja : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>6. Score Tempat Tinggal : </p> <p id="ScoreTempatTinggal"></p></div>
+                  <div style="display: flex;"><p>7. Score Transportasi : </p> <p id="ScoreTransportasi"></p></div>
+                  <div style="display: flex;"><p>8. Score Jabatan : </p> <p id="ScoreJabatan"></p></div>
+                  <div style="display: flex;"><p>9. Score Keahlian : </p> <p id="ScoreKeahlian"></p></div>
+                  <div style="display: flex;"><p>10. Score Lama Kerja : </p> <p id="ScoreLamaKerja"></p></div>
                 </div>
                 <div  style="flex-basis: 34%;">
-                  <div style="display: flex;"><p>11. Score Riwayat Pindah Kerja : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>12. Score Riwayat Aset Pribadi : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>13. Score Hutang di Tempat Lain : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>14. Score Kelancaran Hutang : </p> <p> Mathew</p></div>
-                  <div style="display: flex;"><p>15. Score Jumlah Karyawan : </p> <p> Mathew</p></div>
+                  <div style="display: flex;"><p>11. Score Riwayat Pindah Kerja : </p> <p id="ScoreRiwayatPindahKerja"></p></div>
+                  <div style="display: flex;"><p>12. Score Aset Pribadi : </p> <p id="ScoreAsetPribadi"></p></div>
+                  <div style="display: flex;"><p>13. Score Hutang di Tempat Lain : </p> <p id="ScoreHutangdiTempatLain"></p></div>
+                  <div style="display: flex;"><p>14. Score Kelancaran Hutang : </p> <p id="ScoreKelancaranHutang"></p></div>
+                  <div style="display: flex;"><p>15. Score Jumlah Karyawan : </p> <p id="ScoreJumlahKaryawan"></p></div>
                 </div>
               </div>
-              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p> Mathew</p></div>
+              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p id="ScoreTotal"></p></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="DataSVM" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="display: flex;">
+              </div>
+              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p id="ScoreTotal"></p></div>
             </div>
           </div>
         </div>
@@ -310,6 +325,31 @@
     $('#updateTelp').val(selectedAdmin.NoTelp);
     $('#updatePassword').val(selectedAdmin.Password);
     $('#updateAdminId').val(selectedAdmin.AdminId);
+  }
+
+  function getScoreDetail(val){
+    var score = '{{scorejs|safe}}';
+    const obj = JSON.parse(score);
+
+    val = val.split('-')
+    var scorePengaju = obj.find(element => element.PengajuId == val[0]);
+
+    $('#PengajuId').text(scorePengaju.PengajuId);
+    $('#NamaPengaju').text(val[1]);
+    $('#ScoreUsia').text(scorePengaju.ScoreUsia);
+    $('#ScorePernikahan').text(scorePengaju.ScorePernikahan);
+    $('#ScorePendidikan').text(scorePengaju.ScorePendidikan);
+    $('#ScoreTempatTinggal').text(scorePengaju.ScoreTempatTinggal);
+    $('#ScoreTransportasi').text(scorePengaju.ScoreTransportasi);
+    $('#ScoreJabatan').text(scorePengaju.ScoreJabatan);
+    $('#ScoreKeahlian').text(scorePengaju.ScoreKeahlian);
+    $('#ScoreLamaKerja').text(scorePengaju.ScoreLamaKerja);
+    $('#ScoreRiwayatPindahKerja').text(scorePengaju.ScoreRiwayatPindahKerja);
+    $('#ScoreAsetPribadi').text(scorePengaju.ScoreAsetPribadi);
+    $('#ScoreHutangdiTempatLain').text(scorePengaju.ScoreHutangdiTempatLain);
+    $('#ScoreKelancaranHutang').text(scorePengaju.ScoreKelancaranHutang);
+    $('#ScoreJumlahKaryawan').text(scorePengaju.ScoreJumlahKaryawan);
+    $('#ScoreTotal').text(scorePengaju.ScoreTotal);
   }
 </script>
 
