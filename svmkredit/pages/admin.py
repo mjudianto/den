@@ -155,6 +155,7 @@ def Admin(request, pk):
     # print("prediction : ", prediction)
     insertToTable('prediksisistem', f'null, "{prediction}", {idPengaju["PengajuId"]}', connection, cursor)
     # print("score total : ", scoreTotal)
+    messages.info(request, 'Data Anda Berhasil Disimpan')
 
     context = {
       'pengajuZip' : pengajuZip,
