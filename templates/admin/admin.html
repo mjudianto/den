@@ -46,8 +46,8 @@
                 <div class="row mb-3">
                   <label for="inputPassword3" class="col-sm-4 col-form-label">Permohonan Kredit</label>
                   <div class="col-sm-8" style="align-items: center; display: flex;">
-                    <input type="range" style="width: 80% !important; margin-right: 2vw;" class="form-range" step="100000" id="kreditPengaju" name="kreditPengaju" value="" min="100000" max="50000000" oninput="this.nextElementSibling.value = this.value">
-                    <output></output>
+                    <input type="range" style="width: 80% !important; margin-right: 2vw;" class="form-range" step="100000" id="kreditPengaju" name="kreditPengaju" value="" min="100000" max="50000000" oninput="this.nextElementSibling.value = this.value" onchange="changeNumber(this.value)">
+                    <output id="permohonanKreditOutput"></output>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -819,6 +819,12 @@
     $('#totalBiayaPengaju').val(totalBiaya);
     totalBiaya = formatter.format(totalBiaya) 
     $('#totalBiaya').text(totalBiaya);
+  }
+
+  function changeNumber(val){
+    const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
+    val = formatter.format(val) 
+    $('#permohonanKreditOutput').text(val);
   }
 </script>
 
