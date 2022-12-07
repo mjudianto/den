@@ -6,6 +6,13 @@
 
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
+<style>
+  tbody, td, tfoot, th, thead, tr {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+</style>
+
 {% endblock head %}
 
 {% block content %}
@@ -110,7 +117,7 @@
                   <div class="col">
                   </div>
                   <div class="col" style="display: flex; flex-basis: 40% !important; text-align: right;">
-                    <label for="" class="" style="margin-right: 4.5vw;">Total Biaya</label>
+                    <label for="" class="" style="margin-right: 4.5vw;">Total Biaya / Bulan</label>
                     <p for="" class="" id="totalBiaya" name="totalBiaya"></p>
                     <input type="hidden" value="" name="totalBiayaPengaju" id="totalBiayaPengaju">
                   </div>
@@ -751,14 +758,14 @@
         </div>
       </form>
         <div class="modal fade" id="StatusPengaju" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-md">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table">
+                <table id="example" class="display" style="width:100%">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -773,8 +780,8 @@
                     <tr>
                       <th scope="row">{{pengaju.PengajuId}}</th>
                       <td>{{pengaju.Nama}}</td>
-                      <td>Rp. {{keuanganPengaju.PermohonanKreditPengaju}}</td>
-                      <td>Rp. {{keuanganPengaju.PlafondDisetujui}}</td>
+                      <td>{{keuanganPengaju.PermohonanKreditPengaju}}</td>
+                      <td>{{keuanganPengaju.PlafondDisetujui}}</td>
                       <td>{{pengaju.Status}}</td>
                     </tr>
                     {% endfor %}
@@ -793,7 +800,46 @@
 
 {% block scripts %}
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
 <script>
+  let flag = false;
+
+  $(document).ready(function () {
+    var table = $('#example').DataTable();
+
+    if (!flag){
+      var data = table.rows().data();
+      let datalength = data.length;
+      console.log(datalength);
+
+      for (let i=0 ; i<datalength ; i++){
+        pengajuan = parseInt(data[i][2]);
+        pengajuan = currency(pengajuan);
+        console.log(pengajuan);
+
+        diterima = parseInt(data[i][3]);
+        diterima = currency(diterima);
+
+        data[i][2] = pengajuan;
+        data[i][3] = diterima;
+      }
+
+      $('#example').dataTable().fnClearTable();   
+      for (let i=0 ; i<datalength ; i++){
+          $('#example').dataTable().fnAddData(data[i]);
+      }
+    }
+    flag = true;
+  });
+
+  function currency(val){
+        const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'idr'});
+        val = formatter.format(val);
+        return val;
+    }
+
   function totalPendapatan(val){  
     const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
     $('#totalPendapatanPengaju').val(val);
@@ -825,6 +871,12 @@
     const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
     val = formatter.format(val) 
     $('#permohonanKreditOutput').text(val);
+  }
+
+  function changeNumber2(val){
+    const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'IDR'})
+    val = formatter.format(val) 
+    $('#keuanganPengajuStatus').text(val);
   }
 </script>
 

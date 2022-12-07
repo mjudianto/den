@@ -11,6 +11,24 @@ def User(request, pk):
   cursor = connection.cursor(dictionary=True)
   
   df = pd.read_excel('db/dataPengaju.xlsx', sheet_name='data')
+  dataStatus = df['Status']
+  dataNama = df['Nama']
+  dataScoreUsia = df['Score Usia']
+  dataScorePernikahan = df['Score Pernikahan']
+  dataScorePendidikan = df['Score Pendidikan']
+  dataScoreTempatTinggal = df['Score Tempat Tinggal']
+  dataScoreTransportasi = df['Score Transportasi']
+  dataScoreJabatan = df['Score Jabatan']
+  dataScoreKeahlian = df['Score Keahlian']
+  dataScoreLamaKerja = df['Score Lama Kerja']
+  dataScoreRiwayatPindahKerja = df['Score Riwayat Pindah Kerja']
+  dataScoreAsetPribadi = df['Score Aset Pribadi']
+  dataScoreHutangdiTempatLain = df['Score Hutang di Tempat Lain']
+  dataScoreKelancaranHutang = df['Score Kelancaran Hutang']
+  dataScoreJumlahKaryawan = df['Score Jumlah Karyawan']
+  dataScoreTotal = df['Score Total']
+
+  datazip = zip(dataStatus, dataNama, dataScoreUsia, dataScorePernikahan, dataScorePendidikan, dataScoreTempatTinggal, dataScoreTransportasi, dataScoreJabatan, dataScoreKeahlian, dataScoreLamaKerja, dataScoreRiwayatPindahKerja, dataScoreAsetPribadi, dataScoreHutangdiTempatLain, dataScoreKelancaranHutang, dataScoreJumlahKaryawan, dataScoreTotal)
 
   cursor.execute(f'select * from pengaju where Status = "Pending"')
   pengaju = cursor.fetchall()
@@ -38,6 +56,7 @@ def User(request, pk):
 
   adminjs = json.dumps(admin)
   scorejs = json.dumps(scorePengaju)
+  keuanganpengaju = json.dumps(keuanganPengaju)
   
   context = {
     'pengajuZip' : pengajuZip,
@@ -47,6 +66,8 @@ def User(request, pk):
     'adminjs' : adminjs,
     'scorejs' : scorejs,
     'df' : df,
+    'keuanganpengaju' :keuanganpengaju,
+    'datazip' : datazip,
   }
 
   if request.method == 'POST':
@@ -128,6 +149,8 @@ def User(request, pk):
       'adminjs' : adminjs,
       'scorejs' : scorejs,
       'df' : df,
+      'keuanganpengaju' : keuanganpengaju,
+      'datazip' : datazip,
     }
 
   return render(request, 'master/master.html', context)

@@ -58,8 +58,8 @@
                     <tr>
                       <th scope="row">1</th>
                       <td>{{pengaju.Nama}}</td>
-                      <td>{{keuanganPengaju.PermohonanKreditPengaju}}</td>
-                      <td>{{keuanganPengaju.PlafondMaksimum}}</td>
+                      <td id="kredit-{{pengaju.PengajuId}}">{{keuanganPengaju.PermohonanKreditPengaju}}</td>
+                      <td id="maksimum-{{pengaju.PengajuId}}">{{keuanganPengaju.PlafondMaksimum}}</td>
                       <td>{{keuanganPengaju.PlafondDisetujui}}</td>
                       <td>{{PrediksiSistem.prediksi}}</td>
                       <td>{{scorePengaju.ScoreTotal}}/10</td>
@@ -102,7 +102,7 @@
                   </thead>
                   <tbody>
                     {% for admin in admin %}
-                    <tr>
+                    <tr style="vertical-align: middle;">
                       <th scope="row">{{admin.AdminId}}</th>
                       <td>{{admin.Email}}</td>
                       <td>{{admin.Password}}</td>
@@ -302,8 +302,53 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body" style="display: flex;">
+                <table id="tablesvm" class="display" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Nama</th>
+                      <th scope="col">ScoreUsia</th>
+                      <th scope="col">ScorePernikahan</th>
+                      <th scope="col">ScorePendidikan</th>
+                      <th scope="col">ScoreTempatTinggal</th>
+                      <th scope="col">ScoreTransportasi</th>
+                      <th scope="col">ScoreJabatan</th>
+                      <th scope="col">ScoreKeahlian</th>
+                      <th scope="col">ScoreLamaKerja</th>
+                      <th scope="col">ScoreRiwayatPindahKerja</th>
+                      <th scope="col">ScoreAsetPribadi</th>
+                      <th scope="col">ScoreHutangdiTempatLain</th>
+                      <th scope="col">ScoreKelancaranHutang</th>
+                      <th scope="col">ScoreJumlahKaryawan</th>
+                      <th scope="col">ScoreTotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for dataStatus, dataNama, dataScoreUsia, dataScorePernikahan, dataScorePendidikan, dataScoreTempatTinggal, dataScoreTransportasi, dataScoreJabatan, dataScoreKeahlian, dataScoreLamaKerja, dataScoreRiwayatPindahKerja, dataScoreAsetPribadi, dataScoreHutangdiTempatLain, dataScoreKelancaranHutang, dataScoreJumlahKaryawan, dataScoreTotal in datazip %}
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>{{dataStatus}}</td>
+                        <td>{{dataNama}}</td>
+                        <td>{{dataScoreUsia}}</td>
+                        <td>{{dataScorePernikahan}}</td>
+                        <td>{{dataScorePendidikan}}</td>
+                        <td>{{dataScoreTempatTinggal}}</td>
+                        <td>{{dataScoreTransportasi}}</td>
+                        <td>{{dataScoreJabatan}}</td>
+                        <td>{{dataScoreKeahlian}}</td>
+                        <td>{{dataScoreLamaKerja}}</td>
+                        <td>{{dataScoreRiwayatPindahKerja}}</td>
+                        <td>{{dataScoreAsetPribadi}}</td>
+                        <td>{{dataScoreHutangdiTempatLain}}</td>
+                        <td>{{dataScoreKelancaranHutang}}</td>
+                        <td>{{dataScoreJumlahKaryawan}}</td>
+                        <td>{{dataScoreTotal}}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
-              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p id="ScoreTotal"></p></div>
             </div>
           </div>
         </div>
@@ -314,6 +359,31 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+    var table = $('#tablesvm').DataTable();
+
+    var keuanganpengaju = '{{keuanganpengaju|safe}}';
+    const obj = JSON.parse(keuanganpengaju);
+
+    // console.log(obj.length);
+
+    // console.log(obj[0]['PermohonanKreditPengaju']);
+    for (let i=0 ; i<obj.length ; i++){
+      var kredit = obj[i]['PermohonanKreditPengaju'];
+      kredit = currency(kredit);
+      $('#kredit-'+obj[i]['PengajuId']).text(kredit);
+
+      var maksimum = obj[i]['PlafondMaksimum'];
+      maksimum = currency(maksimum);
+      $('#maksimum-'+obj[i]['PengajuId']).text(maksimum);
+    }
+    // console.log(obj[0]);
+  });
+</script>
 
 <script>
   function getAdmin(val){
@@ -325,6 +395,12 @@
     $('#updateTelp').val(selectedAdmin.NoTelp);
     $('#updatePassword').val(selectedAdmin.Password);
     $('#updateAdminId').val(selectedAdmin.AdminId);
+  }
+
+  function currency(val){
+    const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'idr'});
+    val = formatter.format(val);
+    return val;
   }
 
   function getScoreDetail(val){

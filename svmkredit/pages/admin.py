@@ -71,7 +71,7 @@ def svm():
 def Admin(request, pk):
   connection = connect()
   cursor = connection.cursor(dictionary=True)
-  
+
   classifier = svm()
 
   cursor.execute(f'select * from pengaju where AdminId = {pk}')
