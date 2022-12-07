@@ -19,13 +19,13 @@
     </div>
     <div class="card-body login-form-body">
       <div>
-        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DaftarAjuan" style="text-decoration: none; color: white;">Daftar Ajuan</a></button>
-        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#AjuanDiterima" style="text-decoration: none; color: white;">Ajuan Diterima</a></button>
-        <button type="button" class="btn login-form-input-submit admin-button "><a data-bs-toggle="modal" href="#AjuanDitolak" style="text-decoration: none; color: white;">Ajuan Ditolak</a></button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#DaftarAjuan">Daftar Ajuan</button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#AjuanDiterima">Ajuan Diterima</button>
+        <button type="button" class="btn login-form-input-submit admin-button " data-bs-toggle="modal" data-bs-target="#AjuanDitolak">Ajuan Ditolak</button>
       </div> 
       <div>
-        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DaftarAdmin" style="text-decoration: none; color: white;">Daftar Admin</a></button>
-        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#DataSVM" style="text-decoration: none; color: white;">Data SVM</a></button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#DaftarAdmin">Daftar Admin</button>
+        <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#DataSVM">Data SVM</button>
         <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">SIGN OUT</a> </button>
       </div>
       
@@ -105,7 +105,7 @@
                     <tr style="vertical-align: middle;">
                       <th scope="row">{{admin.AdminId}}</th>
                       <td>{{admin.Email}}</td>
-                      <td>{{admin.Password}}</td>
+                      <td>***********</td>
                       <td>{{admin.NoTelp}}</td>
                       <td>
                         <div style="display: flex; justify-content: center;">
