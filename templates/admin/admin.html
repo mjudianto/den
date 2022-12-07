@@ -25,9 +25,10 @@
       <h3>Sistem Kredit - Admin Page</h3>
     </div>
     <div class="card-body login-form-body">
-      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#FormulirPengajuan" style="text-decoration: none; color: white;">FORMULIR PENGAJUAN</a></button>
-      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;"><a data-bs-toggle="modal" href="#StatusPengaju" style="text-decoration: none; color: white;">DATA PENGAJUAN</a></button>
-      <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">LOG OUT</a> </button>
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#FormulirPengajuan">FORMULIR PENGAJUAN</button>
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#StatusPengaju">DATA PENGAJUAN</button>
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#StatusPengaju">CHANGE PASSWORD</button>
+      <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">SIGN OUT</a> </button>
       <form method="POST">
         {% csrf_token %}
         <div class="modal fade" id="FormulirPengajuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -125,7 +126,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan" data-bs-toggle="modal" data-bs-dismiss="modal">Previous</button>
-                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+                <button type="button" onclick="test()" class="btn btn-primary" data-bs-target="#FormulirPengajuan2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
               </div>
             </div>
           </div>
@@ -804,6 +805,7 @@
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
 <script>
+
   let flag = false;
 
   $(document).ready(function () {
@@ -833,6 +835,24 @@
     }
     flag = true;
   });
+
+  function test(){
+      console.log("working");
+      var flag2 = true;
+      var namaPengaju = document.getElementById("namaPengaju").value;
+      namaPengaju == '' ? flag2 = false : flag2 = true;
+      
+      var nikPengaju = document.getElementById("nikPengaju").value;
+      nikPengaju == '' ? flag2 = false : flag2 = true;
+
+      var totalPendapatanPengaju = document.getElementById("totalPendapatanPengaju").value;
+      totalPendapatanPengaju == '' ? flag2 = false : flag2 = true;
+
+      var totalBiayaPengaju = document.getElementById("totalBiayaPengaju").value;
+      totalBiayaPengaju == '' ? flag2 = false : flag2 = true;
+
+      flag2 == false ? alert("mohon isi data sebelum") : none;
+  }
 
   function currency(val){
         const formatter = new Intl.NumberFormat('id', {style: 'currency', currency: 'idr'});

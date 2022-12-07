@@ -34,11 +34,12 @@
 
 .login-form-header img {
   margin: 2%;
-  height: 45%;
+  height: 55%;
 }
 
 .login-form-header h1 {
   font-weight: bold;
+  font-size: xx-large;
 }
 
 .login-form-header h4 {

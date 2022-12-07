@@ -159,6 +159,18 @@ def Admin(request, pk):
     # print("score total : ", scoreTotal)
     messages.info(request, 'Data Anda Berhasil Disimpan')
 
+    cursor.execute(f'select * from pengaju where AdminId = {pk}')
+    pengaju = cursor.fetchall()
+    keuanganPengaju = []
+
+    for p in pengaju:
+      p = p['PengajuId']
+      cursor.execute(f'select * from keuanganPengaju where PengajuId = {p} ')
+      result = cursor.fetchone()
+      keuanganPengaju.append(result)
+
+    pengajuZip = zip(pengaju, keuanganPengaju)
+
     context = {
       'pengajuZip' : pengajuZip,
     }

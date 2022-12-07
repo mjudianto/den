@@ -32,17 +32,30 @@ def User(request, pk):
 
   cursor.execute(f'select * from pengaju where Status = "Pending"')
   pengaju = cursor.fetchall()
+  print(pengaju)
 
   text = 'select PengajuId from pengaju where Status = "Pending"'
+  cursor.execute('select PengajuId from pengaju where Status = "Pending"')
+  pengajuId = cursor.fetchall()
 
-  cursor.execute(f'select * from keuanganpengaju where PengajuId = ({text})')
-  keuanganPengaju = cursor.fetchall()
+  keuanganPengaju = []
+  scorePengaju = []
+  prediksiSistem = []
 
-  cursor.execute(f'select * from scorepengaju where PengajuId = ({text})')
-  scorePengaju = cursor.fetchall()
+  for p in pengajuId:
+    id = p['PengajuId']
 
-  cursor.execute(f'select * from prediksisistem where PengajuId = ({text})')
-  prediksiSistem = cursor.fetchall()
+    cursor.execute(f'select * from keuanganpengaju where PengajuId = {id}')
+    data = cursor.fetchone()
+    keuanganPengaju.append(data)
+
+    cursor.execute(f'select * from scorepengaju where PengajuId = {id}')
+    data = cursor.fetchone()
+    scorePengaju.append(data)
+
+    cursor.execute(f'select * from prediksisistem where PengajuId = {id}')
+    data = cursor.fetchone()
+    prediksiSistem.append(data)
   
   pengajuZip = zip(pengaju, keuanganPengaju, scorePengaju, prediksiSistem)
 
@@ -141,6 +154,47 @@ def User(request, pk):
             cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = "{telp}" where AdminId = {updateAdminId}')
             connection.commit()
     
+    cursor.execute(f'select * from pengaju where Status = "Pending"')
+    pengaju = cursor.fetchall()
+    # print(pengaju)
+
+    text = 'select PengajuId from pengaju where Status = "Pending"'
+    cursor.execute('select PengajuId from pengaju where Status = "Pending"')
+    pengajuId = cursor.fetchall()
+
+    keuanganPengaju = []
+    scorePengaju = []
+    prediksiSistem = []
+
+    for p in pengajuId:
+      id = p['PengajuId']
+
+      cursor.execute(f'select * from keuanganpengaju where PengajuId = {id}')
+      data = cursor.fetchone()
+      keuanganPengaju.append(data)
+
+      cursor.execute(f'select * from scorepengaju where PengajuId = {id}')
+      data = cursor.fetchone()
+      scorePengaju.append(data)
+
+      cursor.execute(f'select * from prediksisistem where PengajuId = {id}')
+      data = cursor.fetchone()
+      prediksiSistem.append(data)
+    
+    pengajuZip = zip(pengaju, keuanganPengaju, scorePengaju, prediksiSistem)
+
+    cursor.execute(f'select * from pengaju where Status = "Accepted"')
+    pengajuDisetujui = cursor.fetchall()
+
+    cursor.execute(f'select * from pengaju where Status = "Declined"')
+    pengajuDitolak = cursor.fetchall()
+    
+    admin = selectAll('admin', cursor)
+
+    adminjs = json.dumps(admin)
+    scorejs = json.dumps(scorePengaju)
+    keuanganpengaju = json.dumps(keuanganPengaju)
+
     context = {
       'pengajuZip' : pengajuZip,
       'pengajuDisetujui' : pengajuDisetujui,
