@@ -264,8 +264,80 @@
                 <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body" style="display: flex;">
-                <div style="flex-basis: 33%;">
+              <div class="modal-body">
+                <table class="table" style="width:100%; justify-content: center;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Pengaju Id</th>
+                      <th scope="col">Nama Pengaju</th>
+                      <th scope="col">ScoreUsia</th>
+                      <th scope="col">ScorePernikahan</th>
+                      <th scope="col">ScorePendidikan</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                        <th scope="row" id="PengajuId"></th>
+                        <td id="NamaPengaju"></td>
+                        <td id="ScoreUsia"></td>
+                        <td id="ScorePernikahan"></td>
+                        <td id="ScorePendidikan"></td>
+                        
+                      </tr>
+                  </tbody>
+                </table>
+                <table class="table" style="width:100%; justify-content: center;">
+                  <thead>
+                    <tr>
+                      <th scope="col">ScoreTempatTinggal</th>
+                      <th scope="col">ScoreTransportasi</th>
+                      <th scope="col">ScoreJabatan</th>
+                      <th scope="col">ScoreKeahlian</th>
+                      <th scope="col">ScoreLamaKerja</th>
+                      
+                      
+      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                        <td id="ScoreTempatTinggal"></td>
+                        <td id="ScoreTransportasi"></td>
+                        <td id="ScoreJabatan"></td>
+                        <td id="ScoreKeahlian"></td>
+                        <td id="ScoreLamaKerja"></td>
+                        
+                      </tr>
+                  </tbody>
+                </table>
+                <table class="table" style="width:100%; justify-content: center;">
+                  <thead>
+                    <tr>
+                      
+                      <th scope="col">ScoreRiwayatPindahKerja</th>
+                      <th scope="col">ScoreAsetPribadi</th>
+                      <th scope="col">ScoreHutangdiTempatLain</th>
+                      <th scope="col">ScoreKelancaranHutang</th>
+                      <th scope="col">ScoreJumlahKaryawan</th>
+                      <th scope="col">ScoreTotal</th>
+      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                        
+                        <td id="ScoreRiwayatPindahKerja"></td>
+                        <td id="ScoreAsetPribadi"></td>
+                        <td id="ScoreHutangdiTempatLain"></td>
+                        <td id="ScoreKelancaranHutang"></td>
+                        <td id="ScoreJumlahKaryawan"></td>
+                        <td id="ScoreTotal"></td>
+                        
+                      </tr>
+                  </tbody>
+                </table>
+                <!-- <div style="flex-basis: 33%;">
                   <div style="display: flex;"><p>1. Pengaju Id : </p> <p id="PengajuId"></p></div>
                   <div style="display: flex;"><p>2. Nama Pengaju : </p> <p id="NamaPengaju"></p></div>
                   <div style="display: flex;"><p>3. Score Usia : </p> <p id="ScoreUsia"></p></div>
@@ -285,9 +357,8 @@
                   <div style="display: flex;"><p>13. Score Hutang di Tempat Lain : </p> <p id="ScoreHutangdiTempatLain"></p></div>
                   <div style="display: flex;"><p>14. Score Kelancaran Hutang : </p> <p id="ScoreKelancaranHutang"></p></div>
                   <div style="display: flex;"><p>15. Score Jumlah Karyawan : </p> <p id="ScoreJumlahKaryawan"></p></div>
-                </div>
+                </div> -->
               </div>
-              <div style="display: flex; align-self: center;"><p>Score Total : </p> <p id="ScoreTotal"></p></div>
             </div>
           </div>
         </div>
