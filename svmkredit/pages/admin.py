@@ -87,7 +87,8 @@ def Admin(request, pk):
   pengajuZip = zip(pengaju, keuanganPengaju)
 
   context = {
-    'pengajuZip' : pengajuZip
+    'pengajuZip' : pengajuZip,
+    'pk' : pk,
   }
 
 
@@ -177,6 +178,7 @@ def Admin(request, pk):
 
       context = {
         'pengajuZip' : pengajuZip,
+        'pk' : pk,
       }
     
     if button == 'cp':
@@ -195,5 +197,10 @@ def Admin(request, pk):
           messages.info(request, 'Please Match New Password With Confirm New Password')
       else:
         messages.info(request, 'Current Password is Incorect')
+      
+      context = {
+        'pengajuZip' : pengajuZip,
+        'pk' : pk,
+      }
 
   return render(request, 'admin/admin.html', context)
