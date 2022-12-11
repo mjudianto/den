@@ -39,7 +39,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table" style="justify-content: center; align-items: center; text-align: center;">
+                <table class="table" style="justify-content: center; align-items: center; text-align: center; vertical-align: middle;">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -66,14 +66,14 @@
                       <td>
                         <div style="display: flex; justify-content: center;">
                         {% if pengaju.Status == 'Pending' %}
-                          <button type="submit" name="button" value="Accepted-{{pengaju.PengajuId}}" style="margin-right: 1vw;">Accept</button>
-                          <button type="sbumit" name="button" value="Declined-{{pengaju.PengajuId}}">Decline</button>
+                          <button type="submit" name="button" value="Accepted-{{pengaju.PengajuId}}" style="margin-right: 1vw; font-size: 20px !important;">Accept</button>
+                          <button type="sbumit" name="button" value="Declined-{{pengaju.PengajuId}}" style="font-size: 20px !important;">Decline</button>
                         {% else %}
                           {{pengaju.Status}}
                         {% endif %}
                         </div>
                       </td>
-                      <td><button type="button" value="{{pengaju.PengajuId}}-{{pengaju.Nama}}" onclick="getScoreDetail(this.value)"><a data-bs-toggle="modal" href="#ScoreDetail" style="text-decoration: none; color: black;">Show Detail</a></button></td>
+                      <td><button style="font-size: 20px !important;" type="button" value="{{pengaju.PengajuId}}-{{pengaju.Nama}}" onclick="getScoreDetail(this.value)"><a data-bs-toggle="modal" href="#ScoreDetail" style="text-decoration: none; color: black;">Show Detail</a></button></td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -109,8 +109,8 @@
                       <td>{{admin.NoTelp}}</td>
                       <td>
                         <div style="display: flex; justify-content: center;">
-                          <button type="submit" name="button" value="delete-{{admin.AdminId}}" style="margin-right: 7%;">delete</button>
-                          <button type="button" name="button"><a onclick="getAdmin({{admin.AdminId}})" data-bs-toggle="modal" href="#UpdateAdmin" style="text-decoration: none; color: black;">Update</a></button>
+                          <button type="submit" name="button" value="delete-{{admin.AdminId}}" style="margin-right: 7%; font-size: 20px !important;">delete</button>
+                          <button type="submit" name="button" style="font-size: 20px !important;" value="reset-{{admin.AdminId}}">Reset Password</button>
                         </div>
                       </td>
                     </tr>
@@ -144,24 +144,12 @@
                   </span>
                   <input type="text" class="form-control" name="telp" placeholder="Enter Phone Number" aria-describedby="addon-wrapping">
                 </div>
-                <div class="input-group flex-nowrap login-form-input-container register-form-input">
-                  <span class="input-group-text" id="addon-wrapping">
-                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
-                  </span>
-                  <input type="password" class="form-control" name="password" placeholder="Enter Your Password" aria-describedby="addon-wrapping">
-                </div>
-                <div class="input-group flex-nowrap login-form-input-container register-form-input">
-                  <span class="input-group-text" id="addon-wrapping">
-                    <img src="/static/images/logo password.png" alt="" style="height: 3.5vh !important; margin-top: 15% !important;">
-                  </span>
-                  <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Your Password" aria-describedby="addon-wrapping">
-                </div>
                 <button type="submit" name="button" value="admin-0" class="btn login-form-input-submit">ADD</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal fade" id="UpdateAdmin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <!-- <div class="modal fade" id="UpdateAdmin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
               <div class="modal-header">
@@ -198,29 +186,34 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </form>
         <div class="modal fade" id="AjuanDiterima" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-md">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table">
+                <table class="table" style="vertical-align: middle;">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Jangka Waktu</th>
+                      <th scope="col">Nominal Ajuan</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for pengaju in pengajuDisetujui %}
+                    <input type="hidden" value="{{pengajuDisetujuiQty}}" id="pengajuDisetujuiQty">
+                    {% for pengaju, keuanganPengaju in pengajuDisetujui %}
                     <tr>
                       <th scope="row">{{pengaju.PengajuId}}</th>
                       <td>{{pengaju.Nama}}</td>
+                      <td>{{keuanganPengaju.JangkaWaktuKredit}} bulan</td>
+                      <td id="kreditDisetujui-{{pengaju.PengajuId}}">{{keuanganPengaju.PermohonanKreditPengaju}}</td>
                       <td>{{pengaju.Status}}</td>
                     </tr>
                     {% endfor %}
@@ -231,26 +224,30 @@
           </div>
         </div>
         <div class="modal fade" id="AjuanDitolak" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-md">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Status Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table">
+                <table class="table" style="vertical-align: middle;">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Nama Pengaju</th>
+                      <th scope="col">Jangka Waktu</th>
+                      <th scope="col">Nominal Ajuan</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for pengaju in pengajuDitolak %}
+                    {% for pengaju, keuanganPengaju in pengajuDitolak %}
                     <tr>
                       <th scope="row">{{pengaju.PengajuId}}</th>
                       <td>{{pengaju.Nama}}</td>
+                      <td>{{keuanganPengaju.JangkaWaktuKredit}} bulan</td>
+                      <td id="kreditDitolak-{{pengaju.PengajuId}}">{{keuanganPengaju.PermohonanKreditPengaju}}</td>
                       <td>{{pengaju.Status}}</td>
                     </tr>
                     {% endfor %}
@@ -369,6 +366,12 @@
     var keuanganpengaju = '{{keuanganpengaju|safe}}';
     const obj = JSON.parse(keuanganpengaju);
 
+    var pengajuDisetujuijs = '{{pengajuDisetujuijs|safe}}';
+    const obj2 = JSON.parse(pengajuDisetujuijs);
+
+    var pengajuDitolakjs = '{{pengajuDitolakjs|safe}}';
+    const obj3 = JSON.parse(pengajuDitolakjs);
+
     // console.log(obj.length);
 
     // console.log(obj[0]['PermohonanKreditPengaju']);
@@ -382,6 +385,19 @@
       $('#maksimum-'+obj[i]['PengajuId']).text(maksimum);
     }
     // console.log(obj[0]);
+
+    for (let i=0 ; i<obj2.length ; i++){
+      var kredit = obj[i]['PermohonanKreditPengaju'];
+      kredit = currency(kredit);
+      $('#kreditDisetujui-'+obj2[i]['PengajuId']).text(kredit);
+    }
+
+    for (let i=0 ; i<obj3.length ; i++){
+      var kredit = obj[i]['PermohonanKreditPengaju'];
+      kredit = currency(kredit);
+      $('#kreditDitolak-'+obj3[i]['PengajuId']).text(kredit);
+
+    }
   });
 </script>
 

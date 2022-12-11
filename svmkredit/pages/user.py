@@ -32,7 +32,7 @@ def User(request, pk):
 
   cursor.execute(f'select * from pengaju where Status = "Pending"')
   pengaju = cursor.fetchall()
-  print(pengaju)
+  # print(pengaju)
 
   text = 'select PengajuId from pengaju where Status = "Pending"'
   cursor.execute('select PengajuId from pengaju where Status = "Pending"')
@@ -61,15 +61,33 @@ def User(request, pk):
 
   cursor.execute(f'select * from pengaju where Status = "Accepted"')
   pengajuDisetujui = cursor.fetchall()
+  
+  keuanganPengajuDisetujui = []
+  for pdisetujui in pengajuDisetujui:
+    cursor.execute(f'select * from keuanganpengaju where PengajuId = {pdisetujui["PengajuId"]}')
+    dummy = cursor.fetchone()
+    keuanganPengajuDisetujui.append(dummy)
 
   cursor.execute(f'select * from pengaju where Status = "Declined"')
   pengajuDitolak = cursor.fetchall()
+
+  keuanganPengajuDitolak = []
+  for pditolak in pengajuDitolak:
+    cursor.execute(f'select * from keuanganpengaju where PengajuId = {pditolak["PengajuId"]}')
+    dummy = cursor.fetchone()
+    keuanganPengajuDitolak.append(dummy)
   
+  pengajuDitolakjs = json.dumps(pengajuDitolak)
+  pengajuDisetujuijs = json.dumps(pengajuDisetujui)
+  pengajuDisetujui = zip(pengajuDisetujui, keuanganPengajuDisetujui)
+  pengajuDitolak = zip(pengajuDitolak, keuanganPengajuDitolak)
+
   admin = selectAll('admin', cursor)
 
   adminjs = json.dumps(admin)
   scorejs = json.dumps(scorePengaju)
   keuanganpengaju = json.dumps(keuanganPengaju)
+  
   
   context = {
     'pengajuZip' : pengajuZip,
@@ -81,6 +99,8 @@ def User(request, pk):
     'df' : df,
     'keuanganpengaju' :keuanganpengaju,
     'datazip' : datazip,
+    'pengajuDitolakjs' : pengajuDitolakjs,
+    'pengajuDisetujuijs' : pengajuDisetujuijs,
   }
 
   if request.method == 'POST':
@@ -117,43 +137,46 @@ def User(request, pk):
 
     if button[0] == 'admin':
       email = request.POST.get('email')
-      password = request.POST.get('password')
-      confirmpassword = request.POST.get('confirmpassword')
+      password = email
       telp = ''
       telp = request.POST.get('telp')
-      if password == confirmpassword:
-          if telp == None or telp == '':
-              telp = 'null'
-              value = 'null' + ', "' + email + '" , "' + password + '" ,' + telp
-          else:
-              value = 'null' + ', "' + email + '" , "' + password + '" , "' + telp + '"'
-          # print(value)
-          insertToTable(button[0], value, connection, cursor)
+      if telp == None or telp == '':
+          telp = 'null'
+          value = 'null' + ', "' + email + '" , "' + password + '" ,' + telp
       else:
-          messages.info(request, 'Password Doesn"t Match, Please Try Again')
+          value = 'null' + ', "' + email + '" , "' + password + '" , "' + telp + '"'
+      # print(value)
+      insertToTable(button[0], value, connection, cursor)
     
     if button[0] == 'delete':
       cursor.execute(f'delete from admin where AdminId = {button[1]}')
       connection.commit()
     
-    if button[0] == 'updateAdmin':
-      updateAdminId = request.POST.get('updateAdminId')
-      email = request.POST.get('updateEmail')
-      password = request.POST.get('updatePassword')
-      confirmpassword = request.POST.get('updateConfirmpassword')
-      telp = ''
-      telp = request.POST.get('updateTelp')
+    # if button[0] == 'updateAdmin':
+    #   updateAdminId = request.POST.get('updateAdminId')
+    #   email = request.POST.get('updateEmail')
+    #   password = request.POST.get('updatePassword')
+    #   confirmpassword = request.POST.get('updateConfirmpassword')
+    #   telp = ''
+    #   telp = request.POST.get('updateTelp')
 
-      # print(updateAdminId)
-      if password == confirmpassword:
-          if telp == None or telp == '':
-            telp = 'null'
-            cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = {telp} where AdminId = {updateAdminId}')
-            connection.commit()
-          else:
-            cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = "{telp}" where AdminId = {updateAdminId}')
-            connection.commit()
+    #   # print(updateAdminId)
+    #   if password == confirmpassword:
+    #       if telp == None or telp == '':
+    #         telp = 'null'
+    #         cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = {telp} where AdminId = {updateAdminId}')
+    #         connection.commit()
+    #       else:
+    #         cursor.execute(f'update admin set Email = "{email}", Password = "{password}", NoTelp = "{telp}" where AdminId = {updateAdminId}')
+    #         connection.commit()
     
+    if button[0] == 'reset':
+      cursor.execute(f'select Email from admin where AdminId = {button[1]}')
+      defaultpass = cursor.fetchone() 
+      defaultpass = defaultpass['Email']
+      cursor.execute(f'update admin set Password = "{defaultpass}" where AdminId = {button[1]}')
+      connection.commit()
+
     cursor.execute(f'select * from pengaju where Status = "Pending"')
     pengaju = cursor.fetchall()
     # print(pengaju)
@@ -185,15 +208,34 @@ def User(request, pk):
 
     cursor.execute(f'select * from pengaju where Status = "Accepted"')
     pengajuDisetujui = cursor.fetchall()
+    keuanganPengajuDisetujui = []
+    for pdisetujui in pengajuDisetujui:
+      cursor.execute(f'select * from keuanganpengaju where PengajuId = {pdisetujui["PengajuId"]}')
+      dummy = cursor.fetchone()
+      keuanganPengajuDisetujui.append(dummy)
 
     cursor.execute(f'select * from pengaju where Status = "Declined"')
     pengajuDitolak = cursor.fetchall()
+
+    keuanganPengajuDitolak = []
+    for pditolak in pengajuDitolak:
+      cursor.execute(f'select * from keuanganpengaju where PengajuId = {pditolak["PengajuId"]}')
+      dummy = cursor.fetchone()
+      keuanganPengajuDitolak.append(dummy)
+
+    
+    pengajuDitolakjs = json.dumps(pengajuDitolak)
+    pengajuDisetujuijs = json.dumps(pengajuDisetujui)
+    
+    pengajuDisetujui = zip(pengajuDisetujui, keuanganPengajuDisetujui)
+    pengajuDitolak = zip(pengajuDitolak, keuanganPengajuDitolak)
     
     admin = selectAll('admin', cursor)
 
     adminjs = json.dumps(admin)
     scorejs = json.dumps(scorePengaju)
     keuanganpengaju = json.dumps(keuanganPengaju)
+    
 
     context = {
       'pengajuZip' : pengajuZip,
@@ -205,6 +247,8 @@ def User(request, pk):
       'df' : df,
       'keuanganpengaju' : keuanganpengaju,
       'datazip' : datazip,
+      'pengajuDitolakjs' : pengajuDitolakjs,
+      'pengajuDisetujuijs' : pengajuDisetujuijs,
     }
 
   return render(request, 'master/master.html', context)

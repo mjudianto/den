@@ -27,7 +27,7 @@
     <div class="card-body login-form-body">
       <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#FormulirPengajuan">FORMULIR PENGAJUAN</button>
       <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#StatusPengaju">DATA PENGAJUAN</button>
-      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#StatusPengaju">CHANGE PASSWORD</button>
+      <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#ChangePassword">CHANGE PASSWORD</button>
       <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">SIGN OUT</a> </button>
       <form method="POST">
         {% csrf_token %}
@@ -752,7 +752,35 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Pevious</button>
-                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
+                <button type="submit" name="button" value="ajuan" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="ChangePassword" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group flex-nowrap login-form-input-container" style="display: flex; align-items: center;">
+                  Current Password
+                  <input style="margin-left: 3.8vw;" type="password" class="form-control" name="currentPassword" placeholder="Enter Current Password" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container" style="display: flex; align-items: center;">
+                  New Password 
+                  <input style="margin-left: 5vw;" type="password" class="form-control" name="NewPassword" placeholder="Enter New Password" aria-describedby="addon-wrapping">
+                </div>
+                <div class="input-group flex-nowrap login-form-input-container" style="display: flex; align-items: center;">
+                  Confirm New Password
+                  <input style="margin-left: 1vw;" type="password" class="form-control" name="confirmNewPassword" placeholder="Confirm New Password" aria-describedby="addon-wrapping">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Pevious</button>
+                <button type="submit" name="button" value="cp" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
               </div>
             </div>
           </div>
