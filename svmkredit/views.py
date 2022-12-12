@@ -6,6 +6,16 @@ from django.contrib import messages
 from svmkredit.pages.admin import *
 from svmkredit.pages.user import *
 
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.units import inch, cm, mm
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, Paragraph
+import babel.numbers
+
+
 connection = connect()
 cursor = connection.cursor(dictionary=True)
 
@@ -85,3 +95,81 @@ def Register(request):
 Admin
 
 User
+
+def toPdf(request):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf)
+
+    width, height = A4
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica", 14)
+    lines = []
+
+    cursor.execute('select * from pengaju where Status = "Accepted"')
+    disetujui = cursor.fetchall()
+
+    keuanganDisetujui = []
+    for d in disetujui:
+        cursor.execute(f'select * from keuanganpengaju where PengajuId = {d["PengajuId"]}')
+        dummy = cursor.fetchone()
+        keuanganDisetujui.append(dummy)
+
+    lines.append(("PengajuId", "Nama Pengaju", "Janga Waktu", "Nominal Ajuan", "Status"))
+    disetujuizip = zip(disetujui, keuanganDisetujui)
+    for d, k in disetujuizip:
+        PermohonanKreditPengaju = babel.numbers.format_currency(k['PermohonanKreditPengaju'], 'IDR', locale="id")
+        lines.append((str(d['PengajuId']), d['Nama'], str(k['JangkaWaktuKredit']) + " bulan", str(PermohonanKreditPengaju), d['Status']))
+
+    # print(lines)
+    table = Table(lines, colWidths=4 * cm)
+    table.setStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black)])
+
+    table.wrapOn(c, width, height)
+    table.drawOn(c, 5 * mm, 277 * mm)
+
+    c.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='users.pdf')
+
+def toPdf2(request):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf)
+
+    width, height = A4
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica", 14)
+    lines = []
+
+    cursor.execute('select * from pengaju where Status = "Declined"')
+    ditolak = cursor.fetchall()
+
+    keuanganDitolak = []
+    for d in ditolak:
+        cursor.execute(f'select * from keuanganpengaju where PengajuId = {d["PengajuId"]}')
+        dummy = cursor.fetchone()
+        keuanganDitolak.append(dummy)
+
+    lines.append(("PengajuId", "Nama Pengaju", "Janga Waktu", "Nominal Ajuan", "Status"))
+    disetujuizip = zip(ditolak, keuanganDitolak)
+    for d, k in disetujuizip:
+        PermohonanKreditPengaju = babel.numbers.format_currency(k['PermohonanKreditPengaju'], 'IDR', locale="id")
+        lines.append((str(d['PengajuId']), d['Nama'], str(k['JangkaWaktuKredit']) + " bulan", str(PermohonanKreditPengaju), d['Status']))
+
+    # print(lines)
+    table = Table(lines, colWidths=4 * cm)
+    table.setStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black)])
+
+    table.wrapOn(c, width, height)
+    table.drawOn(c, 5 * mm, 277 * mm)
+
+    c.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='users.pdf')

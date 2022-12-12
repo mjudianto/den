@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, View, FormView, ListView
 from db.databaseConnect import *
 from django.contrib import messages
 import json
 import pandas as pd
 from sklearn import preprocessing
+
 
 def User(request, pk):
   connection = connect()

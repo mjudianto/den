@@ -22,4 +22,6 @@ urlpatterns = [
     path('register/', views.Register, name='register'),
     path('admin/<str:pk>/', views.Admin, name='admin'),
     path('master/<str:pk>/', views.User, name='master'),
+    path('pdfDisetujui', views.toPdf, name='pdfDisetujui'),
+    path('pdfDitolak', views.toPdf2, name='pdfDitolak'),
 ]
