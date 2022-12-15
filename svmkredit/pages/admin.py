@@ -93,6 +93,9 @@ def Admin(request, pk):
 
 
   if request.method == 'POST':
+    connection = connect()
+    cursor = connection.cursor(dictionary=True)
+    
     button = request.POST.get('button')
 
     if button == 'ajuan':

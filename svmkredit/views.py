@@ -23,6 +23,9 @@ cursor = connection.cursor(dictionary=True)
 def Login(request):
 
     if request.method == 'POST':
+        connection = connect()
+        cursor = connection.cursor(dictionary=True)
+
         email = request.POST.get('email')
         password = request.POST.get('password')
 

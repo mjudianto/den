@@ -104,6 +104,9 @@ def User(request, pk):
   }
 
   if request.method == 'POST':
+    connection = connect()
+    cursor = connection.cursor(dictionary=True)
+    
     button = request.POST.get('button')
     button = button.split('-')
     # print(button[0])
