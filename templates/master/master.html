@@ -56,7 +56,7 @@
                   <tbody>
                     {% for pengaju, keuanganPengaju, scorePengaju, PrediksiSistem in pengajuZip %}
                     <tr>
-                      <th scope="row">1</th>
+                      <th scope="row">{{pengaju.PengajuId}}</th>
                       <td>{{pengaju.Nama}}</td>
                       <td id="kredit-{{pengaju.PengajuId}}">{{keuanganPengaju.PermohonanKreditPengaju}}</td>
                       <td id="maksimum-{{pengaju.PengajuId}}">{{keuanganPengaju.PlafondMaksimum}}</td>

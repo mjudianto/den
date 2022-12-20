@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 from sklearn.svm import SVC
 
+import random
+
 def svm():
   df = pd.read_excel('db/dataPengaju.xlsx', sheet_name='data')
   df.head
@@ -74,6 +76,58 @@ def Admin(request, pk):
 
   classifier = svm()
 
+  # masukin data dari excel
+  # df = pd.read_excel('db/dataPengaju.xlsx', sheet_name='data')
+  # dataNama = df['Nama']
+  # dataScoreUsia = df['Score Usia']
+  # dataScorePernikahan = df['Score Pernikahan']
+  # dataScorePendidikan = df['Score Pendidikan']
+  # dataScoreTempatTinggal = df['Score Tempat Tinggal']
+  # dataScoreTransportasi = df['Score Transportasi']
+  # dataScoreJabatan = df['Score Jabatan']
+  # dataScoreKeahlian = df['Score Keahlian']
+  # dataScoreLamaKerja = df['Score Lama Kerja']
+  # dataScoreRiwayatPindahKerja = df['Score Riwayat Pindah Kerja']
+  # dataScoreAsetPribadi = df['Score Aset Pribadi']
+  # dataScoreHutangdiTempatLain = df['Score Hutang di Tempat Lain']
+  # dataScoreKelancaranHutang = df['Score Kelancaran Hutang']
+  # dataScoreJumlahKaryawan = df['Score Jumlah Karyawan']
+  # # print(dataNama[0])
+
+  # for i in range(759):
+  #   arr1 = []
+  #   arr2 = []
+  #   nikPengaju = '{:0>16}'.format(i)
+  #   insertToTable('pengaju', f'null, "{dataNama[i]}", "{nikPengaju}", {pk}, "Pending"', connection, cursor)
+
+  #   totalPendapatanPengaju = random.randint(10000000,50000000)
+  #   totalBiayaPengaju = random.randint(1000000,10000000)
+  #   kreditPengaju = random.randint(1000000,20000000)
+  #   jangkaWaktuKredit = random.randint(1,36)
+
+  #   maksimumAngsuran = (totalPendapatanPengaju - totalBiayaPengaju)*75/100
+  #   bunga = 1.58
+  #   plafondMaksimum = (maksimumAngsuran*jangkaWaktuKredit)/(1+(bunga*jangkaWaktuKredit))
+
+  #   insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {i+1}, {plafondMaksimum}, null', connection, cursor)
+
+  #   character = 35/100*((dataScoreHutangdiTempatLain[i]+dataScoreKelancaranHutang[i]+dataScoreRiwayatPindahKerja[i]+dataScorePernikahan[i])/40*10)
+  #   capacity = 25/100*((dataScoreUsia[i]+dataScorePendidikan[i]+dataScoreLamaKerja[i]+dataScoreJabatan[i]+dataScoreKeahlian[i])/50*10)
+  #   capital = 20/100*((dataScoreTempatTinggal[i]+dataScoreTransportasi[i]+dataScoreAsetPribadi[i])/30*10)
+  #   conditionOfEconomics = 20/100*((dataScoreJumlahKaryawan[i])/10*10)
+  #   scoreTotal = character+capacity+capital+conditionOfEconomics
+
+  #   insertToTable('scorepengaju', f'null, {dataScoreUsia[i]}, {dataScorePernikahan[i]}, {dataScorePendidikan[i]}, {dataScoreTempatTinggal[i]}, {dataScoreTransportasi[i]}, {dataScoreJabatan[i]}, {dataScoreKeahlian[i]}, {dataScoreLamaKerja[i]}, {dataScoreRiwayatPindahKerja[i]}, {dataScoreAsetPribadi[i]}, {dataScoreHutangdiTempatLain[i]}, {dataScoreKelancaranHutang[i]}, {dataScoreJumlahKaryawan[i]}, {scoreTotal}, {i+1}', connection, cursor)
+
+  #   arr2 = [dataScoreUsia[i], dataScorePernikahan[i], dataScorePendidikan[i], dataScoreTempatTinggal[i], dataScoreTransportasi[i], dataScoreJabatan[i], dataScoreKeahlian[i], dataScoreLamaKerja[i], dataScoreRiwayatPindahKerja[i], dataScoreAsetPribadi[i], dataScoreHutangdiTempatLain[i], dataScoreKelancaranHutang[i], dataScoreJumlahKaryawan[i], scoreTotal]
+  #   arr1.append(arr2)
+  #   prediction = "Diterima" if classifier.predict(arr1)[0] == 0 else "Ditolak"
+  #   # print("prediction : ", prediction)
+  #   insertToTable('prediksisistem', f'null, "{prediction}", {i+1}', connection, cursor)
+
+
+
+
   cursor.execute(f'select * from pengaju where AdminId = {pk}')
   pengaju = cursor.fetchall()
   keuanganPengaju = []
@@ -110,14 +164,13 @@ def Admin(request, pk):
       totalBiayaPengaju = int(request.POST.get('totalBiayaPengaju')) if request.POST.get('totalBiayaPengaju') != '' and request.POST.get('totalBiayaPengaju') != None else 0
 
       maksimumAngsuran = (totalPendapatanPengaju - totalBiayaPengaju)*75/100
-      print(maksimumAngsuran)
       bunga = 1.58
       plafondMaksimum = (maksimumAngsuran*jangkaWaktuKredit)/(1+(bunga*jangkaWaktuKredit))
       
       cursor.execute(f"SELECT PengajuId FROM pengaju where NIK = '{nikPengaju}'")
       idPengaju = cursor.fetchone()
 
-      insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {idPengaju["PengajuId"]}, {plafondMaksimum}, null', connection, cursor)
+      insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {i+1}, {plafondMaksimum}, null', connection, cursor)
 
       arr1 = []
       arr2 = []
