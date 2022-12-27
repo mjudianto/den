@@ -88,7 +88,9 @@ def User(request, pk):
   scorejs = json.dumps(scorePengaju)
   keuanganpengaju = json.dumps(keuanganPengaju)
   
-  
+  gambar = selectAll('gambar', cursor)
+  gambarjs = json.dumps(gambar)
+
   context = {
     'pengajuZip' : pengajuZip,
     'pengajuDisetujui' : pengajuDisetujui,
@@ -101,6 +103,7 @@ def User(request, pk):
     'datazip' : datazip,
     'pengajuDitolakjs' : pengajuDitolakjs,
     'pengajuDisetujuijs' : pengajuDisetujuijs,
+    'gambarjs' : gambarjs,
   }
 
   if request.method == 'POST':
@@ -239,7 +242,8 @@ def User(request, pk):
     scorejs = json.dumps(scorePengaju)
     keuanganpengaju = json.dumps(keuanganPengaju)
     
-
+    gambar = selectAll('gambar', cursor)
+    gambarjs = json.dumps(gambar)
     context = {
       'pengajuZip' : pengajuZip,
       'pengajuDisetujui' : pengajuDisetujui,
@@ -252,6 +256,7 @@ def User(request, pk):
       'datazip' : datazip,
       'pengajuDitolakjs' : pengajuDitolakjs,
       'pengajuDisetujuijs' : pengajuDisetujuijs,
+      'gambarjs' : gambarjs
     }
 
   return render(request, 'master/master.html', context)

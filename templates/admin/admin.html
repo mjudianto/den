@@ -29,7 +29,7 @@
       <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#StatusPengaju">DATA PENGAJUAN</button>
       <button type="button" class="btn login-form-input-submit admin-button " style="margin-right: 7%;" data-bs-toggle="modal" data-bs-target="#ChangePassword">CHANGE PASSWORD</button>
       <button type="button" class="btn login-form-input-submit admin-button"> <a href="{% url 'login' %}" style="text-decoration: none; color: white;">SIGN OUT</a> </button>
-      <form method="POST">
+      <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="modal fade" id="FormulirPengajuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered modal-md">
@@ -752,6 +752,35 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan15" data-bs-toggle="modal" data-bs-dismiss="modal">Pevious</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan17" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="FormulirPengajuan17" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Jumlah Karyawan Perusahaan Pengaju 15/15</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <label for="formFile" class="form-label">KTP</label>
+                <input class="form-control" name="ktp" type="file" id="formFile">
+                <label for="formFile" class="form-label">SURAT NIKAH/label>
+                <input class="form-control" name="suratNikah" type="file" id="formFile">
+                <label for="formFile" class="form-label">IJAZAH</label>
+                <input class="form-control" name="ijazah" type="file" id="formFile">
+                <label for="formFile" class="form-label">FOTO RUMAH</label>
+                <input class="form-control" name="fotoRumah" type="file" id="formFile">
+                <label for="formFile" class="form-label">SLIK BI</label>
+                <input class="form-control" name="slikBi" type="file" id="formFile">
+                <label for="formFile" class="form-label">SURAT KETERANGAN KANTOR</label>
+                <input class="form-control" name="suratKeteranganKantor" type="file" id="formFile">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-target="#FormulirPengajuan16" data-bs-toggle="modal" data-bs-dismiss="modal">Pevious</button>
                 <button type="submit" name="button" value="ajuan" class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
               </div>
             </div>

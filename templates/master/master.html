@@ -33,13 +33,13 @@
         {% csrf_token %}
         <div class="modal fade" id="DaftarAjuan" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
+            <div class="modal-content" style="overflow: auto !important;">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Daftar Ajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <table class="table" style="justify-content: center; align-items: center; text-align: center; vertical-align: middle;">
+                <table id="daftarAjuanTable" class="table" style="justify-content: center; align-items: center; text-align: center; vertical-align: middle;">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -267,6 +267,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <h1>KTP</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="ktp" src="" alt="">
+                <h1>SURAT NIKAH</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="suratNikah" src="" alt="">
+                <h1>IJAZAH</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="ijazah" src="" alt="">
+                <h1>FOTO RUMAH</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="fotoRumah" src="" alt="">
+                <h1>SLIK BI</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="slikBi" src="" alt="">
+                <h1>SURAT KETERANGAN KANTOR</h1>
+                <img style="width: 500px !important; height: 300px !important;" id="suratKeteranganKantor" src="" alt="">
                 <table class="table" style="width:100%; justify-content: center;">
                   <thead>
                     <tr>
@@ -337,27 +349,6 @@
                       </tr>
                   </tbody>
                 </table>
-                <!-- <div style="flex-basis: 33%;">
-                  <div style="display: flex;"><p>1. Pengaju Id : </p> <p id="PengajuId"></p></div>
-                  <div style="display: flex;"><p>2. Nama Pengaju : </p> <p id="NamaPengaju"></p></div>
-                  <div style="display: flex;"><p>3. Score Usia : </p> <p id="ScoreUsia"></p></div>
-                  <div style="display: flex;"><p>4. Score Pernikahan : </p> <p id="ScorePernikahan"></p></div>
-                  <div style="display: flex;"><p>5. Score Pendidikan : </p> <p id="ScorePendidikan"></p></div>
-                </div>
-                <div style="flex-basis: 33%;">
-                  <div style="display: flex;"><p>6. Score Tempat Tinggal : </p> <p id="ScoreTempatTinggal"></p></div>
-                  <div style="display: flex;"><p>7. Score Transportasi : </p> <p id="ScoreTransportasi"></p></div>
-                  <div style="display: flex;"><p>8. Score Jabatan : </p> <p id="ScoreJabatan"></p></div>
-                  <div style="display: flex;"><p>9. Score Keahlian : </p> <p id="ScoreKeahlian"></p></div>
-                  <div style="display: flex;"><p>10. Score Lama Kerja : </p> <p id="ScoreLamaKerja"></p></div>
-                </div>
-                <div  style="flex-basis: 34%;">
-                  <div style="display: flex;"><p>11. Score Riwayat Pindah Kerja : </p> <p id="ScoreRiwayatPindahKerja"></p></div>
-                  <div style="display: flex;"><p>12. Score Aset Pribadi : </p> <p id="ScoreAsetPribadi"></p></div>
-                  <div style="display: flex;"><p>13. Score Hutang di Tempat Lain : </p> <p id="ScoreHutangdiTempatLain"></p></div>
-                  <div style="display: flex;"><p>14. Score Kelancaran Hutang : </p> <p id="ScoreKelancaranHutang"></p></div>
-                  <div style="display: flex;"><p>15. Score Jumlah Karyawan : </p> <p id="ScoreJumlahKaryawan"></p></div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -432,6 +423,7 @@
 
 <script>
    $(document).ready(function () {
+    $('#daftarAjuanTable').DataTable();
     var table = $('#tablesvm').DataTable();
 
     var keuanganpengaju = '{{keuanganpengaju|safe}}';
@@ -494,8 +486,12 @@
     var score = '{{scorejs|safe}}';
     const obj = JSON.parse(score);
 
-    val = val.split('-')
+    
+
+    var val = val.split('-');
+    // console.log(val[0]);
     var scorePengaju = obj.find(element => element.PengajuId == val[0]);
+    // console.log(scorePengaju);
 
     $('#PengajuId').text(scorePengaju.PengajuId);
     $('#NamaPengaju').text(val[1]);
@@ -513,6 +509,32 @@
     $('#ScoreKelancaranHutang').text(scorePengaju.ScoreKelancaranHutang);
     $('#ScoreJumlahKaryawan').text(scorePengaju.ScoreJumlahKaryawan);
     $('#ScoreTotal').text(scorePengaju.ScoreTotal);
+
+    setImage(val[0]);
+  }
+
+  function setImage(val){
+    var gambar = '{{gambarjs|safe}}';
+    const obj = JSON.parse(gambar);
+    const gambarPengaju = [];
+    for (var i=0 ; i<obj.length ; i++){
+      if (obj[i].GambarPengajuId == val){
+        gambarPengaju.push(obj[i]);
+      }
+    }
+
+    var link = "../../static/images/ktp" + gambarPengaju[0]['Link'];
+    $("#ktp").attr("src", link);
+    var link = "../../static/images/suratNikah" + gambarPengaju[1]['Link'];
+    $("#suratNikah").attr("src", link);
+    var link = "../../static/images/ijazah" + gambarPengaju[2]['Link'];
+    $("#ijazah").attr("src", link);
+    var link = "../../static/images/fotoRumah" + gambarPengaju[3]['Link'];
+    $("#fotoRumah").attr("src", link);
+    var link = "../../static/images/slikBi" + gambarPengaju[4]['Link'];
+    $("#slikBi").attr("src", link);
+    var link = "../../static/images/suratKeteranganKantor" + gambarPengaju[5]['Link'];
+    $("#suratKeteranganKantor").attr("src", link);
   }
 </script>
 

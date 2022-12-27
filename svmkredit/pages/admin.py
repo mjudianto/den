@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View, FormView, ListView
 from db.databaseConnect import *
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
 from sklearn import svm
@@ -157,6 +158,69 @@ def Admin(request, pk):
       nikPengaju = request.POST.get('nikPengaju')
 
       insertToTable('pengaju', f'null, "{namaPengaju}", "{nikPengaju}", {pk}, "Pending"', connection, cursor)
+      cursor.execute(f"SELECT PengajuId FROM pengaju where NIK = '{nikPengaju}'")
+      idPengaju = cursor.fetchone()
+
+      try:
+        ktp = request.FILES['ktp']
+        fs = FileSystemStorage(location='static/images/ktp')
+        filename = fs.save(ktp.name, ktp)
+        ktp = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{ktp}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM KTP')
+        return render(request, 'admin/admin.html', context)
+      try:
+        suratNikah = request.FILES['suratNikah']
+        fs = FileSystemStorage(location='static/images/suratNikah')
+        filename = fs.save(suratNikah.name, suratNikah)
+        suratNikah = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{suratNikah}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM SURAT NIKAH')
+        return render(request, 'admin/admin.html', context)
+      try:
+        ijazah = request.FILES['ijazah']
+        fs = FileSystemStorage(location='static/images/ijazah')
+        filename = fs.save(ijazah.name, ijazah)
+        ijazah = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{ijazah}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM IJAZAH')
+        return render(request, 'admin/admin.html', context)
+      try:
+        fotoRumah = request.FILES['fotoRumah']
+        fs = FileSystemStorage(location='static/images/fotoRumah')
+        filename = fs.save(fotoRumah.name, fotoRumah)
+        fotoRumah = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{fotoRumah}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM FOTO RUMAH')
+        return render(request, 'admin/admin.html', context)
+      try:
+        slikBi = request.FILES['slikBi']
+        fs = FileSystemStorage(location='static/images/slikBi')
+        filename = fs.save(slikBi.name, slikBi)
+        slikBi = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{slikBi}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM SLIK BI')
+        return render(request, 'admin/admin.html', context)
+      try:
+        suratKeteranganKantor = request.FILES['suratKeteranganKantor']
+        fs = FileSystemStorage(location='static/images/suratKeteranganKantor')
+        filename = fs.save(suratKeteranganKantor.name, suratKeteranganKantor)
+        suratKeteranganKantor = fs.url(filename)
+        insertToTable('gambar', f'null, "{idPengaju["PengajuId"]}", "{suratKeteranganKantor}"', connection, cursor)
+
+      except:
+        messages.info(request, 'MOHON UNTUK MENGISI KOLOM SURAT KETERANGAN KANTOR')
+        return render(request, 'admin/admin.html', context)
 
       kreditPengaju = int(request.POST.get('kreditPengaju'))
       jangkaWaktuKredit = int(request.POST.get('jangkaWaktuKredit'))
@@ -167,10 +231,9 @@ def Admin(request, pk):
       bunga = 1.58
       plafondMaksimum = (maksimumAngsuran*jangkaWaktuKredit)/(1+(bunga*jangkaWaktuKredit))
       
-      cursor.execute(f"SELECT PengajuId FROM pengaju where NIK = '{nikPengaju}'")
-      idPengaju = cursor.fetchone()
+      
 
-      insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {i+1}, {plafondMaksimum}, null', connection, cursor)
+      insertToTable('keuanganpengaju', f'null, {totalPendapatanPengaju}, {totalBiayaPengaju}, {kreditPengaju}, {jangkaWaktuKredit}, {idPengaju["PengajuId"]}, {plafondMaksimum}, null', connection, cursor)
 
       arr1 = []
       arr2 = []
